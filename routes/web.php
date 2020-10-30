@@ -13,13 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+
+
+Route::post('app/create_tag', 'AdminController@addTag');
+
 Route::get('/', function () {
     return view('welcome');
 });
-
-Auth::routes();
- 
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::any('{slug}', function () {
     return view('welcome');
