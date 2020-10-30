@@ -6,9 +6,9 @@ export default {
         }
     },
     methods: {
-        callApi(method, url, dataObj){
+       async callApi(method, url, dataObj ){
             try {
-                axios({
+                return await axios({
                     method: method,
                     url: url,
                     data: dataObj
@@ -18,31 +18,32 @@ export default {
             }
 
         },
-        info (desc, title="Hey") {
+       
+        i(desc, title="Hey") {
             this.$Notice.info({
                 title: title,
                 desc: desc
             });
         },
-        success (desc, title="Great!") {
+        s(desc, title="Great!") {
             this.$Notice.success({
                 title: title,
                 desc: desc
             });
         },
-        warning (desc, title="Opps!") {
+        w(desc, title="Oops!") {
             this.$Notice.warning({
                 title: title,
                 desc: desc
             });
         },
-        error(desc, title="Oops!") {
+        e(desc, title="Oops!") {
             this.$Notice.error({
                 title: title,
                 desc: desc
             });
         }, 
-        swr (desc = 'Something went wrong! Please try again.', title="Hey") {
+        swr(desc='Something went wrong! Please try again.', title="Oops") {
             this.$Notice.error({
                 title: title,
                 desc: desc
