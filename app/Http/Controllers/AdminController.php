@@ -23,10 +23,7 @@ class AdminController extends Controller
             'tagName' => 'required',
             'id' => 'required',
         ]);
-        Tag::where('id', $request->id)->update([
-            'tagName' => $request->tagName
-        ]);
-        return response()->json([
+        return Tag::where('id', $request->id)->update([
             'tagName' => $request->tagName
         ]);
     }

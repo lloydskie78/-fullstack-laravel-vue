@@ -2198,7 +2198,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 res = _context2.sent;
 
                 if (res.status === 200) {
-                  _this2.tag[_this2.index].tagName = _this2.editData.tagName;
+                  _this2.tags[_this2.index].tagName = _this2.editData.tagName;
 
                   _this2.s('Tag edited successfully');
 
@@ -2228,6 +2228,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       };
       this.editData = obj;
       this.editModal = true;
+      this.index = index;
     }
   },
   created: function created() {
@@ -85870,7 +85871,7 @@ var render = function() {
                                     attrs: { type: "info", size: "small" },
                                     on: {
                                       click: function($event) {
-                                        return _vm.showEditModal(tag)
+                                        return _vm.showEditModal(tag, i)
                                       }
                                     }
                                   },

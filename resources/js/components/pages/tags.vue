@@ -24,7 +24,7 @@
 								<td class="_table_name">{{tag.tagName}}</td>
 								<td>{{tag.created_at}}</td>
 								<td>
-                                    <Button type="info" size="small" @click="showEditModal(tag)">Edit</Button>
+                                    <Button type="info" size="small" @click="showEditModal(tag, i)">Edit</Button>
                                     <Button type="error" size="small">Delete</Button>
 								</td>
 							</tr>
@@ -82,7 +82,7 @@ export default {
 			editData : {
 				tagName: ''
 			},
-			index: -1
+			index : -1
 		}
 	},
 	methods : {
@@ -108,7 +108,7 @@ export default {
 			if(this.editData.tagName.trim()=='') return this.e('Tag name is required!')
 			const res = await this.callApi('post', 'app/edit_tag', this.editData)
 			if(res.status===200){
-				this.tag[this.index].tagName = this.editData.tagName
+				this.tags[this.index].tagName = this.editData.tagName
 				this.s('Tag edited successfully')
 				this.editModal = false
 			}else{
@@ -128,6 +128,7 @@ export default {
 			}
 			this.editData = obj
 			this.editModal = true
+			this.index = index
 
 		}
 	},
