@@ -27,9 +27,25 @@ class AdminController extends Controller
             'tagName' => $request->tagName
         ]);
     }
+     public function deleteTag(Request $request)
+    {   
+        $this->validate($request, [
+            'id' => 'required',
+        ]);
+        return Tag::where('id', $request->id)->delete();
+    }
 
     public function getTag()
     {
         return Tag::orderBy('id', 'desc')->get();
+    }
+    public function upload(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:jpeg,jpg,png',
+        ]);
+        $imgName = time().'.'.$request->file->extension();
+        $request->file->move(public_path('uploads'),$imgName);
+        return $imgName;
     }
 }

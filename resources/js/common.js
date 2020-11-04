@@ -31,7 +31,7 @@ export default {
                 desc: desc
             });
         },
-        w(desc, title="Oops!") {
+        w(desc, title="Warning!") {
             this.$Notice.warning({
                 title: title,
                 desc: desc
