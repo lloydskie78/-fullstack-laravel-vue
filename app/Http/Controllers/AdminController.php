@@ -48,4 +48,19 @@ class AdminController extends Controller
         $request->file->move(public_path('uploads'),$imgName);
         return $imgName;
     }
+    public function deleteImage(Request $request)
+    {
+        $fileName = $request->imageName;
+        $this->deleteFIleFromServer($fileName);
+        return 'done';
+    }
+    public function deleteFIleFromServer($fileName)
+    {
+        $filePath = public_path().'/uploads/'.$fileName;
+        if(file_exists($filePath)){
+            @unlink($filePath);
+        }
+
+        return;
+    }
 }

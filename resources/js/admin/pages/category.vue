@@ -204,7 +204,7 @@ export default {
         },
         handleFormatError (file) {
             this.$Notice.warning({
-                title: 'The file format is incorrect',
+                title: 'The file format is  incorrect',
                 desc: `${file.errors.file.length ? file.errors.file[0] : 'Something went wronng'}`
             });
         },
@@ -215,7 +215,14 @@ export default {
             });
         },
 		async deleteImage(){
-			console.log(this.data.iconImage)
+			let image = this.data.iconImage
+			this.data.iconImage = ''
+			this.$refs.uploads.clearFiles()
+			const res = await this.callApi('post', 'app/delete_image', {imageName: image})
+			if(res.status != 200){
+				this.data.iconImage = image
+				this.swr()
+			}
 		}
 	},
 	async created(){
