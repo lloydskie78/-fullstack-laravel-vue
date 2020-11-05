@@ -59,7 +59,13 @@
                             </div>
                         </Upload>
                         <div class="demo-upload-list" v-if="data.iconImage">
+
                             <img :src="`/uploads/${data.iconImage}`" />
+
+							<div class="demo-upload-list-cover">
+								<Icon type="ios-trash-outline" @click="deleteImage"></Icon>
+							</div>
+
                         </div>
 						<div slot="footer">
 							<Button type="default" @click="addModal=false">Close</Button>
@@ -207,7 +213,10 @@ export default {
                 title: 'Exceeding file size limit',
                 desc: 'File  ' + file.name + ' is too large, no more than 2M.'
             });
-        }
+        },
+		async deleteImage(){
+			console.log(this.data.iconImage)
+		}
 	},
 	async created(){
         this.token = window.Laravel.csrfToken 
