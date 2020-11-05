@@ -11,21 +11,25 @@
 								<!-- TABLE TITLE -->
 							<tr>
 								<th>ID</th>
-								<th>Tag name</th>
-								<th>Created at</th>
+								<th>Icon Image</th>
+								<th>Category Name</th>
+								<th>Created At</th>
 								<th>Action</th>
 							</tr>
 								<!-- TABLE TITLE -->
 
 
 								<!-- ITEMS -->
-							<tr v-for="(tag, i) in tags" :key="i" v-if="tags.length"> 
-								<td>{{tag.id}}</td>
-								<td class="_table_name">{{tag.tagName}}</td>
-								<td>{{tag.created_at}}</td>
+							<tr v-for="(category, i) in categoryLists" :key="i" v-if="categoryLists.length"> 
+								<td>{{category.id}}</td>
+								<td class="table_image">
+									<img :src="category.iconImage"/>
+								</td>
+								<td class="_table_name">{{category.categoryName}}</td>
+								<td>{{category.created_at}}</td>
 								<td>
-                                    <Button type="info" size="small" @click="showEditModal(tag, i)">Edit</Button>
-                                    <Button type="error" size="small" @click="showDelModal(tag, i)" :loading="tag.isDeleting ">Delete</Button>
+                                    <Button type="info" size="small" @click="showEditModal(category, i)">Edit</Button>
+                                    <Button type="error" size="small" @click="showDelModal(category, i)" :loading="category.isDeleting ">Delete</Button>
 								</td>
 							</tr>
 								<!-- ITEMS -->
@@ -33,7 +37,7 @@
 					</div>
 				</div>
 
-					<!-- TAG ADDING MODAL -->
+					<!-- CATEGORY ADDING MODAL -->
 					<Modal
     				    v-model="addModal"
     				    title="Add Category"
@@ -41,9 +45,10 @@
 						:closable="false"
 						>
 
-                        <Input v-model="data.tagName" placeholder="Add category name" clearable />
+                        <Input v-model="data.categoryName" placeholder="Add category name" clearable />
                         <div class="space"></div>
                         <Upload
+							ref="uploads"
                             type="drag"
                             :headers="{'x-csrf-token': token, 'X-Requested-With': 'XMLHttpRequest'}"
                             :on-success="handleSuccess"
@@ -61,18 +66,18 @@
                         <div class="demo-upload-list" v-if="data.iconImage">
 
                             <img :src="`/uploads/${data.iconImage}`" />
-
 							<div class="demo-upload-list-cover">
 								<Icon type="ios-trash-outline" @click="deleteImage"></Icon>
 							</div>
 
                         </div>
+
 						<div slot="footer">
 							<Button type="default" @click="addModal=false">Close</Button>
-							<Button type="info" @click="addTag" :disabled="isAdding" :loading="isAdding">{{isAdding ? 'Adding...' : 'Add Tag'}}</Button>
+							<Button type="info" @click="addCategory" :disabled="isAdding" :loading="isAdding">{{isAdding ? 'Adding...' : 'Add Category'}}</Button>
 						</div>
     				</Modal>
-					<!---- TAG EDITING MODAL -->
+					<!---- CATEGORY EDITING MODAL -->
 					<Modal
     				    v-model="editModal"
     				    title="Edit Tag"
@@ -80,7 +85,7 @@
 						:closable="false"
 						>
     				    
-						<Input v-model="data.tagName" placeholder="Edit tag name" clearable />
+						<Input v-model="data.categoryName" placeholder="Edit tag name" clearable />
  
 						<div slot="footer">
 							<Button type="default" @click="editModal=false">Close</Button>
@@ -88,7 +93,7 @@
 						</div>
     				</Modal>
 
-					<!--- TAG DELETING MODAL-->
+					<!--- CATEGORY DELETING MODAL-->
 
 					<Modal v-model="showDeleteModal" width="360">
     				    <p slot="header" style="color:#f60;text-align:center">
@@ -118,9 +123,9 @@ export default {
 			addModal : false,
 			editModal : false,
 			isAdding : false,
-			tags: [],
+			categoryLists: [],
 			editData : {
-				tagName: ''
+				categoryName: ''
 			},
 			index : -1,
 			showDeleteModal: false,
@@ -131,18 +136,21 @@ export default {
 		}
 	},
 	methods : {
-		 async addTag(){
-			if(this.data.tagName.trim()=='') return this.e('Tag name is required!')
-			const res = await this.callApi('post', 'app/create_tag', this.data)
+		 async addCategory(){
+			if(this.data.categoryName.trim()=='') return this.e('Category name is required!')
+			if(this.data.iconImage.trim()=='') return this.e('Icon image is required!')
+			this.data.iconImage = `/uploads/${this.data.iconImage}`
+			const res = await this.callApi('post', 'app/create_category', this.data)
 			if(res.status===201){
-				this.tags.unshift(res.data)
-				this.s('Tag added successfully')
+				this.categoryLists.unshift(res.data)
+				this.s('Category added successfully')
 				this.addModal = false
-				this.data.tagName = '';
+				this.data.categoryName = ''
+				this.data.iconImage = ''
 			}else{
 				if(res.status==422){
-					if(res.data.errors.tagName){
-						this.i(res.data.errors.tagName[0])
+					if(res.data.errors.categoryName){
+						this.i(res.data.errors.categoryName[0])
 					}
 				}else{
 					this.swr();
@@ -150,16 +158,17 @@ export default {
 			}
 		},
 		async editTag(){
-			if(this.editData.tagName.trim()=='') return this.e('Tag name is required!')
+			if(this.editData.categoryName.trim()=='') return this.e('Tag name is required!')
+			if(this.editData.iconImage.trim()=='') return this.e('Icon image is required!')
 			const res = await this.callApi('post', 'app/edit_tag', this.editData)
 			if(res.status===200){
-				this.tags[this.index].tagName = this.editData.tagName
-				this.s('Tag edited successfully')
+				this.tags[this.index].categoryName = this.editData.categoryName
+				this.s('Category edited successfully')
 				this.editModal = false
 			}else{
 				if(res.status==422){
-					if(res.data.errors.tagName){
-						this.i(res.data.errors.tagName[0])
+					if(res.data.errors.categoryName){
+						this.i(res.data.errors.categoryName[0])
 					}
 				}else{
 					this.swr();
@@ -169,7 +178,7 @@ export default {
 		showEditModal(tag, index){
 			let obj = {
 				id: tag.id,
-				tagName: tag.tagName
+				categoryName: tag.categoryName
 			}
 			this.editData = obj
 			this.editModal = true
@@ -227,9 +236,9 @@ export default {
 	},
 	async created(){
         this.token = window.Laravel.csrfToken 
-		const res = await this.callApi('get', 'app/get_tags')
+		const res = await this.callApi('get', 'app/get_category')
 		if(res.status===200){
-			this.tags = res.data
+			this.categoryLists= res.data
 		}else{
 			this.swr();
 		}

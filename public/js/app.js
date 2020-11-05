@@ -2037,6 +2037,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2047,9 +2052,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       addModal: false,
       editModal: false,
       isAdding: false,
-      tags: [],
+      categoryLists: [],
       editData: {
-        tagName: ''
+        categoryName: ''
       },
       index: -1,
       showDeleteModal: false,
@@ -2060,7 +2065,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
-    addTag: function addTag() {
+    addCategory: function addCategory() {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
@@ -2069,38 +2074,48 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!(_this.data.tagName.trim() == '')) {
+                if (!(_this.data.categoryName.trim() == '')) {
                   _context.next = 2;
                   break;
                 }
 
-                return _context.abrupt("return", _this.e('Tag name is required!'));
+                return _context.abrupt("return", _this.e('Category name is required!'));
 
               case 2:
-                _context.next = 4;
-                return _this.callApi('post', 'app/create_tag', _this.data);
+                if (!(_this.data.iconImage.trim() == '')) {
+                  _context.next = 4;
+                  break;
+                }
+
+                return _context.abrupt("return", _this.e('Icon image is required!'));
 
               case 4:
+                _this.data.iconImage = "/uploads/".concat(_this.data.iconImage);
+                _context.next = 7;
+                return _this.callApi('post', 'app/create_category', _this.data);
+
+              case 7:
                 res = _context.sent;
 
                 if (res.status === 201) {
-                  _this.tags.unshift(res.data);
+                  _this.categoryLists.unshift(res.data);
 
-                  _this.s('Tag added successfully');
+                  _this.s('Category added successfully');
 
                   _this.addModal = false;
-                  _this.data.tagName = '';
+                  _this.data.categoryName = '';
+                  _this.data.iconImage = '';
                 } else {
                   if (res.status == 422) {
-                    if (res.data.errors.tagName) {
-                      _this.i(res.data.errors.tagName[0]);
+                    if (res.data.errors.categoryName) {
+                      _this.i(res.data.errors.categoryName[0]);
                     }
                   } else {
                     _this.swr();
                   }
                 }
 
-              case 6:
+              case 9:
               case "end":
                 return _context.stop();
             }
@@ -2117,7 +2132,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                if (!(_this2.editData.tagName.trim() == '')) {
+                if (!(_this2.editData.categoryName.trim() == '')) {
                   _context2.next = 2;
                   break;
                 }
@@ -2125,29 +2140,37 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context2.abrupt("return", _this2.e('Tag name is required!'));
 
               case 2:
-                _context2.next = 4;
-                return _this2.callApi('post', 'app/edit_tag', _this2.editData);
+                if (!(_this2.editData.iconImage.trim() == '')) {
+                  _context2.next = 4;
+                  break;
+                }
+
+                return _context2.abrupt("return", _this2.e('Icon image is required!'));
 
               case 4:
+                _context2.next = 6;
+                return _this2.callApi('post', 'app/edit_tag', _this2.editData);
+
+              case 6:
                 res = _context2.sent;
 
                 if (res.status === 200) {
-                  _this2.tags[_this2.index].tagName = _this2.editData.tagName;
+                  _this2.tags[_this2.index].categoryName = _this2.editData.categoryName;
 
-                  _this2.s('Tag edited successfully');
+                  _this2.s('Category edited successfully');
 
                   _this2.editModal = false;
                 } else {
                   if (res.status == 422) {
-                    if (res.data.errors.tagName) {
-                      _this2.i(res.data.errors.tagName[0]);
+                    if (res.data.errors.categoryName) {
+                      _this2.i(res.data.errors.categoryName[0]);
                     }
                   } else {
                     _this2.swr();
                   }
                 }
 
-              case 6:
+              case 8:
               case "end":
                 return _context2.stop();
             }
@@ -2158,7 +2181,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     showEditModal: function showEditModal(tag, index) {
       var obj = {
         id: tag.id,
-        tagName: tag.tagName
+        categoryName: tag.categoryName
       };
       this.editData = obj;
       this.editModal = true;
@@ -2274,13 +2297,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             case 0:
               _this5.token = window.Laravel.csrfToken;
               _context5.next = 3;
-              return _this5.callApi('get', 'app/get_tags');
+              return _this5.callApi('get', 'app/get_category');
 
             case 3:
               res = _context5.sent;
 
               if (res.status === 200) {
-                _this5.tags = res.data;
+                _this5.categoryLists = res.data;
               } else {
                 _this5.swr();
               }
@@ -85529,16 +85552,20 @@ var render = function() {
                   [
                     _vm._m(0),
                     _vm._v(" "),
-                    _vm._l(_vm.tags, function(tag, i) {
-                      return _vm.tags.length
+                    _vm._l(_vm.categoryLists, function(category, i) {
+                      return _vm.categoryLists.length
                         ? _c("tr", { key: i }, [
-                            _c("td", [_vm._v(_vm._s(tag.id))]),
+                            _c("td", [_vm._v(_vm._s(category.id))]),
                             _vm._v(" "),
-                            _c("td", { staticClass: "_table_name" }, [
-                              _vm._v(_vm._s(tag.tagName))
+                            _c("td", { staticClass: "table_image" }, [
+                              _c("img", { attrs: { src: category.iconImage } })
                             ]),
                             _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(tag.created_at))]),
+                            _c("td", { staticClass: "_table_name" }, [
+                              _vm._v(_vm._s(category.categoryName))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(category.created_at))]),
                             _vm._v(" "),
                             _c(
                               "td",
@@ -85549,7 +85576,7 @@ var render = function() {
                                     attrs: { type: "info", size: "small" },
                                     on: {
                                       click: function($event) {
-                                        return _vm.showEditModal(tag, i)
+                                        return _vm.showEditModal(category, i)
                                       }
                                     }
                                   },
@@ -85562,11 +85589,11 @@ var render = function() {
                                     attrs: {
                                       type: "error",
                                       size: "small",
-                                      loading: tag.isDeleting
+                                      loading: category.isDeleting
                                     },
                                     on: {
                                       click: function($event) {
-                                        return _vm.showDelModal(tag, i)
+                                        return _vm.showDelModal(category, i)
                                       }
                                     }
                                   },
@@ -85605,11 +85632,11 @@ var render = function() {
               _c("Input", {
                 attrs: { placeholder: "Add category name", clearable: "" },
                 model: {
-                  value: _vm.data.tagName,
+                  value: _vm.data.categoryName,
                   callback: function($$v) {
-                    _vm.$set(_vm.data, "tagName", $$v)
+                    _vm.$set(_vm.data, "categoryName", $$v)
                   },
-                  expression: "data.tagName"
+                  expression: "data.categoryName"
                 }
               }),
               _vm._v(" "),
@@ -85618,6 +85645,7 @@ var render = function() {
               _c(
                 "Upload",
                 {
+                  ref: "uploads",
                   attrs: {
                     type: "drag",
                     headers: {
@@ -85695,9 +85723,13 @@ var render = function() {
                         disabled: _vm.isAdding,
                         loading: _vm.isAdding
                       },
-                      on: { click: _vm.addTag }
+                      on: { click: _vm.addCategory }
                     },
-                    [_vm._v(_vm._s(_vm.isAdding ? "Adding..." : "Add Tag"))]
+                    [
+                      _vm._v(
+                        _vm._s(_vm.isAdding ? "Adding..." : "Add Category")
+                      )
+                    ]
                   )
                 ],
                 1
@@ -85726,11 +85758,11 @@ var render = function() {
               _c("Input", {
                 attrs: { placeholder: "Edit tag name", clearable: "" },
                 model: {
-                  value: _vm.data.tagName,
+                  value: _vm.data.categoryName,
                   callback: function($$v) {
-                    _vm.$set(_vm.data, "tagName", $$v)
+                    _vm.$set(_vm.data, "categoryName", $$v)
                   },
-                  expression: "data.tagName"
+                  expression: "data.categoryName"
                 }
               }),
               _vm._v(" "),
@@ -85839,9 +85871,11 @@ var staticRenderFns = [
     return _c("tr", [
       _c("th", [_vm._v("ID")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Tag name")]),
+      _c("th", [_vm._v("Icon Image")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Created at")]),
+      _c("th", [_vm._v("Category Name")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Created At")]),
       _vm._v(" "),
       _c("th", [_vm._v("Action")])
     ])
