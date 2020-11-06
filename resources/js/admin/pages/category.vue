@@ -65,7 +65,7 @@
                         </Upload>
                         <div class="demo-upload-list" v-if="data.iconImage">
 
-                            <img :src="`/uploads/${data.iconImage}`" />
+                            <img :src="`${data.iconImage}`" />
 							<div class="demo-upload-list-cover">
 								<Icon type="ios-trash-outline" @click="deleteImage"></Icon>
 							</div>
@@ -80,16 +80,43 @@
 					<!---- CATEGORY EDITING MODAL -->
 					<Modal
     				    v-model="editModal"
-    				    title="Edit Tag"
+    				    title="Edit Category"
 						:mask-closable="false"
 						:closable="false"
 						>
-    				    
-						<Input v-model="data.categoryName" placeholder="Edit tag name" clearable />
+
+    				   <Input v-model="editData.categoryName" placeholder="Add category name" clearable />
+                        <div class="space"></div>
+                        <Upload v-show="isIconImageNew"
+							ref="editDataUploads"
+                            type="drag"
+                            :headers="{'x-csrf-token': token, 'X-Requested-With': 'XMLHttpRequest'}"
+                            :on-success="handleSuccess"
+                            :on-error="handleError"
+                            :format="['jpg', 'jpeg', 'png']"
+                            :max-size="2048"
+                            :on-format-error="handleFormatError"
+                            :on-exceeded-size="handleMaxSize"
+                            action="/app/upload">
+                            <div style="padding: 20px 0">
+                                <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                                <p>Click or drag files here to upload</p>
+                            </div>
+                        </Upload>
+
+                        <div class="demo-upload-list" v-if="editData.iconImage">
+
+                            <img :src="`${editData.iconImage}`" />
+							<div class="demo-upload-list-cover">
+								<Icon type="ios-trash-outline" @click="deleteImage(false)"></Icon>
+							</div>
+
+                        </div>
+
  
 						<div slot="footer">
-							<Button type="default" @click="editModal=false">Close</Button>
-							<Button type="info" @click="editTag" :disabled="isAdding" :loading="isAdding">{{isAdding ? 'Editing...' : 'Edit Tag'}}</Button>
+							<Button type="default" @click="closeEditModal">Close</Button>
+							<Button type="info" @click="editCategory" :disabled="isAdding" :loading="isAdding">{{isAdding ? 'Editing...' : 'Edit Category'}}</Button>
 						</div>
     				</Modal>
 
@@ -125,18 +152,21 @@ export default {
 			isAdding : false,
 			categoryLists: [],
 			editData : {
-				categoryName: ''
+				iconImage: '',
+                categoryName: ''
 			},
 			index : -1,
 			showDeleteModal: false,
 			isDeleting: false,
 			deleteItem: {},
             delIndex: -1,
-            token: ''
+			token: '',
+			isIconImageNew: false,
+			isEditingItem: false
 		}
 	},
 	methods : {
-		 async addCategory(){
+		async addCategory(){
 			if(this.data.categoryName.trim()=='') return this.e('Category name is required!')
 			if(this.data.iconImage.trim()=='') return this.e('Icon image is required!')
 			this.data.iconImage = `/uploads/${this.data.iconImage}`
@@ -157,12 +187,12 @@ export default {
 				}
 			}
 		},
-		async editTag(){
+		async editCategory(){
 			if(this.editData.categoryName.trim()=='') return this.e('Tag name is required!')
 			if(this.editData.iconImage.trim()=='') return this.e('Icon image is required!')
-			const res = await this.callApi('post', 'app/edit_tag', this.editData)
+			const res = await this.callApi('post', 'app/edit_category', this.editData)
 			if(res.status===200){
-				this.tags[this.index].categoryName = this.editData.categoryName
+				this.categoryLists[this.index].categoryName = this.editData.categoryName
 				this.s('Category edited successfully')
 				this.editModal = false
 			}else{
@@ -170,19 +200,23 @@ export default {
 					if(res.data.errors.categoryName){
 						this.i(res.data.errors.categoryName[0])
 					}
+					if(res.data.errors.iconImage){
+						this.i(res.data.errors.iconImage[0])
+					}
 				}else{
 					this.swr();
 				}
 			}
 		},
-		showEditModal(tag, index){
-			let obj = {
-				id: tag.id,
-				categoryName: tag.categoryName
-			}
-			this.editData = obj
+		showEditModal(category, index){
+			// let obj = {
+			// 	id: tag.id,
+			// 	categoryName: tag.categoryName
+			// }
+			this.editData = category
 			this.editModal = true
 			this.index = index
+			this.isEditingItem = true
 		},
 		async deleteTag(){
 			this.isDeleting = true
@@ -202,7 +236,11 @@ export default {
 			this.showDeleteModal = true
         },
         handleSuccess (res, file) {
-            this.data.iconImage = res
+			res = `/uploads/${res}`
+			if(this.isEditingItem){
+				return this.editData.iconImage = res
+			}
+			this.data.iconImage = res
         },
         handleError (res, file) {
             this.data.iconImage = res
@@ -223,15 +261,30 @@ export default {
                 desc: 'File  ' + file.name + ' is too large, no more than 2M.'
             });
         },
-		async deleteImage(){
-			let image = this.data.iconImage
-			this.data.iconImage = ''
-			this.$refs.uploads.clearFiles()
+		async deleteImage(isAdd=true){
+			
+			let image
+
+			if(!isAdd){
+				this.isIconImageNew= true
+				image = this.editData.iconImage
+				this.editData.iconImage = ''
+				this.$refs.editDataUploads.clearFiles()
+			}else{
+				image = this.data.iconImage
+				this.editData.iconImage = ''
+				this.$refs.uploads.clearFiles()
+			}
+			
 			const res = await this.callApi('post', 'app/delete_image', {imageName: image})
 			if(res.status != 200){
 				this.data.iconImage = image
 				this.swr()
 			}
+		},
+		closeEditModal(){
+			this.isEditingItem = false
+			this.editModal = false
 		}
 	},
 	async created(){
