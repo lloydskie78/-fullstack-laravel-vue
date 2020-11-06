@@ -7,7 +7,11 @@ import firstpage from './components/pages/myFirstVuePage'
 import newRoutePage from './components/pages/newRoutePage'
 import hooks from './components/pages/basic/hooks.vue'
 import methods from './components/pages/basic/methods.vue'
-import home from './components/pages/home.vue'
+
+
+import home from './components/pages/home'
+import tags from './admin/pages/tags'
+import category from './admin/pages/category'
 
 const routes = [
     //project routes
@@ -15,25 +19,14 @@ const routes = [
         path: '/',
         component: home
     },
-    //test routes
     {
-        path: '/my-new-vue-route',
-        component: firstpage
-    }, 
-    {
-        path: '/new-route',
-        component: newRoutePage
+        path: '/tags',
+        component: tags
     },
-    //vue hooks
     {
-        path: '/hooks',
-        component: hooks
-    },
-    //more basics
-    {
-        path: '/methods',
-        component: methods
-    },
+        path: '/category',
+        component: category
+    }
 ] 
 
 export default new Router({
