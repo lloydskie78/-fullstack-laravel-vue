@@ -66,7 +66,7 @@
 
 					<!--- TAG DELETING MODAL-->
 
-					<Modal v-model="showDeleteModal" width="360">
+					<!-- <Modal v-model="showDeleteModal" width="360">
     				    <p slot="header" style="color:#f60;text-align:center">
     				        <Icon type="ios-information-circle"></Icon>
     				        <span>Delete confirmation</span>
@@ -77,13 +77,18 @@
     				    <div slot="footer">
     				        <Button type="error" size="large" long :loading="isDeleting" :disabled="isDeleting" @click="deleteTag">Delete</Button>
     				    </div>
-    				</Modal>
+    				</Modal> -->
+					<deleteModal></deleteModal>
 			</div>
 		</div>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
+import deleteModal from '../components/deleteModal.vue'
+
 export default {
 	data(){
 		return {
@@ -101,11 +106,12 @@ export default {
 			showDeleteModal: false,
 			isDeleting: false,
 			deleteItem: {},
-			delIndex: -1
+			delIndex: -1,
+			websiteSettings: []
 		}
 	},
 	methods : {
-		 async addTag(){
+		async addTag(){
 			if(this.data.tagName.trim()=='') return this.e('Tag name is required!')
 			const res = await this.callApi('post', 'app/create_tag', this.data)
 			if(res.status===201){
@@ -162,9 +168,18 @@ export default {
 			this.showDeleteModal = false
 		},
 		showDelModal(tag, i){
-			this.deleteItem = tag
-			this.delIndex = i
-			this.showDeleteModal = true
+			const deleteModalObj = {
+				showDeleteModal: true,
+				deleteUrl: 'app/delete_tag',
+				data: tag,
+				deletingIndex: i,
+				isDeleted: false
+			}
+			this.$store.commit('setDeletingModalObj', deleteModalObj)
+			console.log('delete method called')
+			// this.deleteItem = tag
+			// this.delIndex = i
+			// this.showDeleteModal = true
 		}
 	},
 	async created(){
@@ -174,6 +189,20 @@ export default {
 		}else{
 			this.swr();
 		}
-	}
+	},
+	components: {
+		deleteModal
+	},
+	computed: {
+		...mapGetters(['getDeleteModalObj'])
+	},
+	watch: {
+		getDeleteModalObj(obj){
+			console.log(obj)
+			if(obj.isDeleted){
+				this.tags.splice(obj.delIndex, 1)
+			}
+		}
+	},
 }
 </script>
