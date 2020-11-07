@@ -122,7 +122,7 @@
 
 					<!--- CATEGORY DELETING MODAL-->
 
-					<Modal v-model="showDeleteModal" width="360">
+					<!-- <Modal v-model="showDeleteModal" width="360">
     				    <p slot="header" style="color:#f60;text-align:center">
     				        <Icon type="ios-information-circle"></Icon>
     				        <span>Delete confirmation</span>
@@ -133,13 +133,17 @@
     				    <div slot="footer">
     				        <Button type="error" size="large" long :loading="isDeleting" :disabled="isDeleting" @click="deleteTag">Delete</Button>
     				    </div>
-    				</Modal>
+    				</Modal> -->
+					<deleteModal></deleteModal>
 			</div>
 		</div>
     </div>
 </template>
 
 <script>
+
+import deleteModal from '../components/deleteModal.vue'
+
 export default {
 	data(){
 		return {
@@ -231,9 +235,16 @@ export default {
 			this.showDeleteModal = false
 		},
 		showDelModal(tag, i){
-			this.deleteItem = tag
-			this.delIndex = i
-			this.showDeleteModal = true
+			const deleteModalObj = {
+				showDeleteModal: true,
+				deleteUrl: 'app/delete_tag',
+				data: tag,
+				deletingIndex: i,
+				isDeleted: false
+        	}
+			// this.deleteItem = tag
+			// this.delIndex = i
+			// this.showDeleteModal = true
         },
         handleSuccess (res, file) {
 			res = `/uploads/${res}`
@@ -295,6 +306,9 @@ export default {
 		}else{
 			this.swr();
 		}
+	},
+	components: {
+		deleteModal
 	}
 }
 </script>

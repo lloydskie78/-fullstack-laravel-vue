@@ -3,7 +3,7 @@
         <div class="content">
             <div class="container-fluid">
                 <h1>I will show you all other components react to changes</h1>
-                <h2>Current state of counter is : {{$store.state.counter}}</h2>
+                <h2>Current state of counter is : {{counter}}</h2>
                 <div>
                     <comA></comA>
                 </div>
@@ -24,17 +24,31 @@
 import comA from './comA'
 import comB from './comB'
 import comC from './comC'
-
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
     data(){
         return {
-
+            
         }
+    },
+    methods: {
+        ...mapActions([
+            'changeCounterAction'
+        ])
+    },
+    computed: {
+        ...mapGetters({
+            'counter' : 'getCounter'
+        })
     },
     methods : {
         changeCounter(){
-            this.$store.commit('changeTheCounter', 1)
+            this.$store.dispatch('changeCounterAction', 1)
+            // this.$store.commit('changeTheCounter', 1)
+        },
+        runSomethingWhenCounterChange(){
+            console.log('I am running based on changes')
         }
     },
     created(){
@@ -44,6 +58,12 @@ export default {
         comA,
         comB,
         comC
+    },
+    watch : {
+        counter(value){
+            console.log('counter is changing', value)
+            this.runSomethingWhenCounterChange()
+        }
     }
 }
 </script>
