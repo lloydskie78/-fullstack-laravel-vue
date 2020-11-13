@@ -2,7 +2,8 @@
     <div>
         <Modal 
         :value="getDeleteModalObj.showDeleteModal"
-        :mask-closable = "false"
+        :mask-closable="false"
+        :closable="false"
         width="360">
     	    <p slot="header" style="color:#f60;text-align:center">
     	        <Icon type="ios-information-circle"></Icon>
@@ -12,7 +13,8 @@
     	        <p>Are you sure you want to delete this tag?</p>
     	    </div>
     	    <div slot="footer">
-    	        <Button type="error" size="large" long :loading="isDeleting" :disabled="isDeleting" @click="deleteTag">Delete</Button>
+    	        <Button type="default" size="large" @click="closeModal">Close</Button>
+    	        <Button type="error" size="large" :loading="isDeleting" :disabled="isDeleting" @click="deleteTag">Delete</Button>
     	    </div>
     	</Modal>
     </div>
@@ -40,8 +42,10 @@ export default {
                 this.$store.commit('setDeleteModal', false)
 			}
 			this.isDeleting = false
-			
-		}
+		},
+        closeModal(){
+            this.$store.commit('setDeleteModal', false)
+        }
     },
     computed: {
         ...mapGetters(['getDeleteModalObj'])

@@ -1955,6 +1955,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1998,6 +2000,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }))();
+    },
+    closeModal: function closeModal() {
+      this.$store.commit('setDeleteModal', false);
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['getDeleteModalObj']))
@@ -2017,7 +2022,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _components_deleteModal_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/deleteModal.vue */ "./resources/js/admin/components/deleteModal.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -2153,18 +2165,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2217,7 +2218,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context.abrupt("return", _this.e('Icon image is required!'));
 
               case 4:
-                _this.data.iconImage = "/uploads/".concat(_this.data.iconImage);
+                _this.data.iconImage = "".concat(_this.data.iconImage);
                 _context.next = 7;
                 return _this.callApi('post', 'app/create_category', _this.data);
 
@@ -2319,49 +2320,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.index = index;
       this.isEditingItem = true;
     },
-    deleteTag: function deleteTag() {
-      var _this3 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
-        var res;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                _this3.isDeleting = true;
-                _context3.next = 3;
-                return _this3.callApi('post', 'app/delete_tag', _this3.deleteItem);
-
-              case 3:
-                res = _context3.sent;
-
-                if (res.status === 200) {
-                  _this3.tags.splice(_this3.delIndex, 1);
-
-                  _this3.w('A tag has been deleted.');
-                } else {
-                  _this3.swr();
-                }
-
-                _this3.isDeleting = false;
-                _this3.showDeleteModal = false;
-
-              case 7:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3);
-      }))();
-    },
-    showDelModal: function showDelModal(tag, i) {
+    showDelModal: function showDelModal(category, i) {
       var deleteModalObj = {
         showDeleteModal: true,
-        deleteUrl: 'app/delete_tag',
-        data: tag,
+        deleteUrl: 'app/delete_category',
+        data: category,
         deletingIndex: i,
         isDeleted: false
-      }; // this.deleteItem = tag
+      };
+      this.$store.commit('setDeletingModalObj', deleteModalObj); // this.deleteItem = tag
       // this.delIndex = i
       // this.showDeleteModal = true
     },
@@ -2395,49 +2362,49 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     deleteImage: function deleteImage() {
       var _arguments = arguments,
-          _this4 = this;
+          _this3 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
         var isAdd, image, res;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
                 isAdd = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : true;
 
                 if (!isAdd) {
-                  _this4.isIconImageNew = true;
-                  image = _this4.editData.iconImage;
-                  _this4.editData.iconImage = '';
+                  _this3.isIconImageNew = true;
+                  image = _this3.editData.iconImage;
+                  _this3.editData.iconImage = '';
 
-                  _this4.$refs.editDataUploads.clearFiles();
+                  _this3.$refs.editDataUploads.clearFiles();
                 } else {
-                  image = _this4.data.iconImage;
-                  _this4.editData.iconImage = '';
+                  image = _this3.data.iconImage;
+                  _this3.editData.iconImage = '';
 
-                  _this4.$refs.uploads.clearFiles();
+                  _this3.$refs.uploads.clearFiles();
                 }
 
-                _context4.next = 4;
-                return _this4.callApi('post', 'app/delete_image', {
+                _context3.next = 4;
+                return _this3.callApi('post', 'app/delete_image', {
                   imageName: image
                 });
 
               case 4:
-                res = _context4.sent;
+                res = _context3.sent;
 
                 if (res.status != 200) {
-                  _this4.data.iconImage = image;
+                  _this3.data.iconImage = image;
 
-                  _this4.swr();
+                  _this3.swr();
                 }
 
               case 6:
               case "end":
-                return _context4.stop();
+                return _context3.stop();
             }
           }
-        }, _callee4);
+        }, _callee3);
       }))();
     },
     closeEditModal: function closeEditModal() {
@@ -2446,37 +2413,47 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   created: function created() {
-    var _this5 = this;
+    var _this4 = this;
 
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
       var res;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
         while (1) {
-          switch (_context5.prev = _context5.next) {
+          switch (_context4.prev = _context4.next) {
             case 0:
-              _this5.token = window.Laravel.csrfToken;
-              _context5.next = 3;
-              return _this5.callApi('get', 'app/get_category');
+              _this4.token = window.Laravel.csrfToken;
+              _context4.next = 3;
+              return _this4.callApi('get', 'app/get_category');
 
             case 3:
-              res = _context5.sent;
+              res = _context4.sent;
 
               if (res.status === 200) {
-                _this5.categoryLists = res.data;
+                _this4.categoryLists = res.data;
               } else {
-                _this5.swr();
+                _this4.swr();
               }
 
             case 5:
             case "end":
-              return _context5.stop();
+              return _context4.stop();
           }
         }
-      }, _callee5);
+      }, _callee4);
     }))();
   },
   components: {
     deleteModal: _components_deleteModal_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapGetters"])(["getDeleteModalObj"])),
+  watch: {
+    getDeleteModalObj: function getDeleteModalObj(obj) {
+      console.log(obj);
+
+      if (obj.isDeleted) {
+        this.categoryLists.splice(obj.delIndex, 1);
+      }
+    }
   }
 });
 
@@ -2593,20 +2570,63 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       data: {
-        tagName: ''
+        tagName: ""
       },
       addModal: false,
       editModal: false,
       isAdding: false,
       tags: [],
       editData: {
-        tagName: ''
+        tagName: ""
       },
       index: -1,
       showDeleteModal: false,
@@ -2626,16 +2646,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!(_this.data.tagName.trim() == '')) {
+                if (!(_this.data.tagName.trim() == "")) {
                   _context.next = 2;
                   break;
                 }
 
-                return _context.abrupt("return", _this.e('Tag name is required!'));
+                return _context.abrupt("return", _this.e("Tag name is required!"));
 
               case 2:
                 _context.next = 4;
-                return _this.callApi('post', 'app/create_tag', _this.data);
+                return _this.callApi("post", "app/create_tag", _this.data);
 
               case 4:
                 res = _context.sent;
@@ -2643,10 +2663,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 if (res.status === 201) {
                   _this.tags.unshift(res.data);
 
-                  _this.s('Tag added successfully');
+                  _this.s("Tag added successfully");
 
                   _this.addModal = false;
-                  _this.data.tagName = '';
+                  _this.data.tagName = "";
                 } else {
                   if (res.status == 422) {
                     if (res.data.errors.tagName) {
@@ -2674,16 +2694,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                if (!(_this2.editData.tagName.trim() == '')) {
+                if (!(_this2.editData.tagName.trim() == "")) {
                   _context2.next = 2;
                   break;
                 }
 
-                return _context2.abrupt("return", _this2.e('Tag name is required!'));
+                return _context2.abrupt("return", _this2.e("Tag name is required!"));
 
               case 2:
                 _context2.next = 4;
-                return _this2.callApi('post', 'app/edit_tag', _this2.editData);
+                return _this2.callApi("post", "app/edit_tag", _this2.editData);
 
               case 4:
                 res = _context2.sent;
@@ -2691,7 +2711,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 if (res.status === 200) {
                   _this2.tags[_this2.index].tagName = _this2.editData.tagName;
 
-                  _this2.s('Tag edited successfully');
+                  _this2.s("Tag edited successfully");
 
                   _this2.editModal = false;
                 } else {
@@ -2732,7 +2752,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _this3.isDeleting = true;
                 _context3.next = 3;
-                return _this3.callApi('post', 'app/delete_tag', _this3.deleteItem);
+                return _this3.callApi("post", "app/delete_tag", _this3.deleteItem);
 
               case 3:
                 res = _context3.sent;
@@ -2740,7 +2760,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 if (res.status === 200) {
                   _this3.tags.splice(_this3.delIndex, 1);
 
-                  _this3.w('A tag has been deleted.');
+                  _this3.w("A tag has been deleted.");
                 } else {
                   _this3.swr();
                 }
@@ -2759,13 +2779,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     showDelModal: function showDelModal(tag, i) {
       var deleteModalObj = {
         showDeleteModal: true,
-        deleteUrl: 'app/delete_tag',
+        deleteUrl: "app/delete_tag",
         data: tag,
         deletingIndex: i,
         isDeleted: false
       };
-      this.$store.commit('setDeletingModalObj', deleteModalObj);
-      console.log('delete method called'); // this.deleteItem = tag
+      this.$store.commit("setDeletingModalObj", deleteModalObj);
+      console.log("delete method called"); // this.deleteItem = tag
       // this.delIndex = i
       // this.showDeleteModal = true
     }
@@ -2780,7 +2800,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           switch (_context4.prev = _context4.next) {
             case 0:
               _context4.next = 2;
-              return _this4.callApi('get', 'app/get_tags');
+              return _this4.callApi("get", "app/get_tags");
 
             case 2:
               res = _context4.sent;
@@ -2802,7 +2822,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   components: {
     deleteModal: _components_deleteModal_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['getDeleteModalObj'])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(["getDeleteModalObj"])),
   watch: {
     getDeleteModalObj: function getDeleteModalObj(obj) {
       console.log(obj);
@@ -85787,6 +85807,7 @@ var render = function() {
           attrs: {
             value: _vm.getDeleteModalObj.showDeleteModal,
             "mask-closable": false,
+            closable: false,
             width: "360"
           }
         },
@@ -85817,10 +85838,18 @@ var render = function() {
               _c(
                 "Button",
                 {
+                  attrs: { type: "default", size: "large" },
+                  on: { click: _vm.closeModal }
+                },
+                [_vm._v("Close")]
+              ),
+              _vm._v(" "),
+              _c(
+                "Button",
+                {
                   attrs: {
                     type: "error",
                     size: "large",
-                    long: "",
                     loading: _vm.isDeleting,
                     disabled: _vm.isDeleting
                   },
@@ -86282,7 +86311,7 @@ var render = function() {
                 "p",
                 { staticClass: "_title0" },
                 [
-                  _vm._v("Tags "),
+                  _vm._v("\n                    Tags\n                    "),
                   _c(
                     "Button",
                     {

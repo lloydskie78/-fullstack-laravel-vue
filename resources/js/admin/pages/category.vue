@@ -122,18 +122,6 @@
 
 					<!--- CATEGORY DELETING MODAL-->
 
-					<!-- <Modal v-model="showDeleteModal" width="360">
-    				    <p slot="header" style="color:#f60;text-align:center">
-    				        <Icon type="ios-information-circle"></Icon>
-    				        <span>Delete confirmation</span>
-    				    </p>
-    				    <div style="text-align:center">
-    				        <p>Are you sure you want to delete this tag?</p>
-    				    </div>
-    				    <div slot="footer">
-    				        <Button type="error" size="large" long :loading="isDeleting" :disabled="isDeleting" @click="deleteTag">Delete</Button>
-    				    </div>
-    				</Modal> -->
 					<deleteModal></deleteModal>
 			</div>
 		</div>
@@ -143,6 +131,7 @@
 <script>
 
 import deleteModal from '../components/deleteModal.vue'
+import {mapGetters} from 'vuex'
 
 export default {
 	data(){
@@ -173,7 +162,7 @@ export default {
 		async addCategory(){
 			if(this.data.categoryName.trim()=='') return this.e('Category name is required!')
 			if(this.data.iconImage.trim()=='') return this.e('Icon image is required!')
-			this.data.iconImage = `/uploads/${this.data.iconImage}`
+			this.data.iconImage = `${this.data.iconImage}`
 			const res = await this.callApi('post', 'app/create_category', this.data)
 			if(res.status===201){
 				this.categoryLists.unshift(res.data)
@@ -222,26 +211,15 @@ export default {
 			this.index = index
 			this.isEditingItem = true
 		},
-		async deleteTag(){
-			this.isDeleting = true
-			const res = await this.callApi('post', 'app/delete_tag', this.deleteItem)
-			if(res.status === 200){
-				this.tags.splice(this.delIndex, 1)
-				this.w('A tag has been deleted.')
-			}else{
-				this.swr()
-			}
-			this.isDeleting = false
-			this.showDeleteModal = false
-		},
-		showDelModal(tag, i){
+		showDelModal(category, i){
 			const deleteModalObj = {
 				showDeleteModal: true,
-				deleteUrl: 'app/delete_tag',
-				data: tag,
+				deleteUrl: 'app/delete_category',
+				data: category,
 				deletingIndex: i,
 				isDeleted: false
-        	}
+			}
+			this.$store.commit('setDeletingModalObj', deleteModalObj)
 			// this.deleteItem = tag
 			// this.delIndex = i
 			// this.showDeleteModal = true
@@ -309,6 +287,17 @@ export default {
 	},
 	components: {
 		deleteModal
-	}
+	},
+    computed: {
+        ...mapGetters(["getDeleteModalObj"])
+    },
+    watch: {
+        getDeleteModalObj(obj) {
+            console.log(obj);
+            if (obj.isDeleted) {
+                this.categoryLists.splice(obj.delIndex, 1);
+            }
+        }
+    }
 }
 </script>
