@@ -3,7 +3,7 @@
        <div class="content">
 			<div class="container-fluid">
 				<div class="row">
-					<div class="col col-md-3">
+					<div class="col-12 col-md-3">
 						<div class="_1adminOverveiw_card _box_shadow _border_radious _mar_b30 _1adminOverveiw_bg_one">
 							<div class="_1adminOverveiw_card_left">
 								<p class="_1adminOverveiw_card_left_num">3</p>
@@ -16,7 +16,7 @@
 						</div>
 					</div>
 
-					<div class="col col-md-3">
+					<div class="col-12 col-md-3">
 						<div class="_1adminOverveiw_card _box_shadow _border_radious _mar_b30 _1adminOverveiw_bg_two">
 							<div class="_1adminOverveiw_card_left">
 								<p class="_1adminOverveiw_card_left_num">29</p>
@@ -29,7 +29,7 @@
 						</div>
 					</div>
 
-					<div class="col col-md-3">
+					<div class="col-12 col-md-3">
 						<div class="_1adminOverveiw_card _box_shadow _border_radious _mar_b30 _1adminOverveiw_bg_two">
 							<div class="_1adminOverveiw_card_left">
 								<p class="_1adminOverveiw_card_left_num">29</p>
@@ -42,7 +42,7 @@
 						</div>
 					</div>
 
-					<div class="col col-md-3">
+					<div class="col-12 col-md-3">
 						<div class="_1adminOverveiw_card _box_shadow _border_radious _mar_b30 _1adminOverveiw_bg_two">
 							<div class="_1adminOverveiw_card_left">
 								<p class="_1adminOverveiw_card_left_num">29</p>
