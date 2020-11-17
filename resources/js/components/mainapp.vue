@@ -32,6 +32,11 @@
                                 <Icon type="ios-speedometer"/> Category
                             </router-link>
                         </li>
+                        <li>
+                            <router-link to="/adminusers">
+                                <Icon type="ios-speedometer"/> Users
+                            </router-link>
+                        </li>
                     </ul>
                 </div>
             </div>
