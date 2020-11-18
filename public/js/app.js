@@ -8155,7 +8155,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n._1adminOverveiw_table_recent[data-v-c2ef5de0] {\n    margin: 0 auto;\n    margin-top: 15%;\n}\n.login-footer[data-v-c2ef5de0] {\n    text-align: center;\n}\n.login_header[data-v-c2ef5de0]{\n    text-align: center;\n    margin-bottom: 25px;\n}\n\n", ""]);
+exports.push([module.i, "\n._1adminOverveiw_table_recent[data-v-c2ef5de0] {\n    margin: 0 auto;\n    margin-top: 220px;\n    width: 400px;\n}\n.login_footer[data-v-c2ef5de0]{\n    text-align: center;\n}\n.login_header[data-v-c2ef5de0]{\n    text-align: center;\n    margin-bottom: 25px;\n}\n", ""]);
 
 // exports
 
@@ -87516,7 +87516,7 @@ var render = function() {
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "login-footer" },
+              { staticClass: "login_footer" },
               [
                 _c(
                   "Button",
