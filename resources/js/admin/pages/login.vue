@@ -12,7 +12,7 @@
                     <div class="space">
                         <Input type="password" v-model="data.password" placeholder="******" />
                     </div>
-                    <div class="login-footer">
+                    <div class="login_footer">
                         <Button type="primary" @click="login" :disabled="this.isLogging" :loading="isLogging">{{ isLogging ? 'Loading ...' : 'Login'}}</Button>
                     </div>
                 </div>
@@ -41,7 +41,8 @@ export default {
             const res = await this.callApi('post', 'app/user_login', this.data)
 
             if(res.status === 200){
-                this.s(res.data.msg)                
+                window.location = "/"       
+                this.s(res.data.msg)         
             }else{
                 if(res.status === 401){
                     this.e(res.data.msg)
@@ -61,17 +62,16 @@ export default {
 
 
 <style scoped>
-
     ._1adminOverveiw_table_recent {
         margin: 0 auto;
-        margin-top: 15%;
+        margin-top: 220px;
+        width: 400px;
     }
-    .login-footer {
+    .login_footer{
         text-align: center;
     }
     .login_header{
         text-align: center;
         margin-bottom: 25px;
     }
-
 </style>

@@ -11,6 +11,33 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
+
+    public function index(Request $request)
+    {   //? check first if user is admin or not and if the path is login
+        if(!Auth::check() && $request->path() != 'login'){
+            return redirect('/login');
+        }else{
+            return view('welcome');
+        }
+        
+        $user = Auth::user();
+        if($user->userType == 'User'){
+            return redirect('/login');
+        }
+
+        if($request->path() == 'login'){
+            return redirect('/');
+        }
+        
+        return view('welcome');
+    }
+
+    public function logout()
+    {   
+        Auth::logout();
+        return \redirect('login');
+    }
+
     public function addTag(Request $request)
     {   
         $this->validate($request, [
@@ -175,6 +202,16 @@ class AdminController extends Controller
         ]);
         
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+            $user = Auth::user();
+
+            if($user->userType == 'User'){
+                Auth::logout();
+                return response()->json([
+                    'msg' => 'Not an Admin',
+                    'user' =>  $user,
+                ], 401);
+            }
+            
             return response()->json([
                 'msg' => 'You are logged in!',
             ]);

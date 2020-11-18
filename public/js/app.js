@@ -3019,6 +3019,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 res = _context.sent;
 
                 if (res.status === 200) {
+                  window.location = "/";
+
                   _this.s(res.data.msg);
                 } else {
                   if (res.status === 401) {
@@ -3499,11 +3501,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['user'],
   data: function data() {
     return {
       isLoggedIn: false
     };
+  },
+  created: function created() {
+    this.$store.commit('updateUser', this.user);
   }
 });
 
@@ -8155,7 +8166,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n._1adminOverveiw_table_recent[data-v-c2ef5de0] {\n    margin: 0 auto;\n    margin-top: 15%;\n}\n.login-footer[data-v-c2ef5de0] {\n    text-align: center;\n}\n.login_header[data-v-c2ef5de0]{\n    text-align: center;\n    margin-bottom: 25px;\n}\n\n", ""]);
+exports.push([module.i, "\n._1adminOverveiw_table_recent[data-v-c2ef5de0] {\n    margin: 0 auto;\n    margin-top: 220px;\n    width: 400px;\n}\n.login_footer[data-v-c2ef5de0]{\n    text-align: center;\n}\n.login_header[data-v-c2ef5de0]{\n    text-align: center;\n    margin-bottom: 25px;\n}\n", ""]);
 
 // exports
 
@@ -87516,7 +87527,7 @@ var render = function() {
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "login-footer" },
+              { staticClass: "login_footer" },
               [
                 _c(
                   "Button",
@@ -87845,7 +87856,7 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm.isLoggedIn
+      _vm.$store.state.user
         ? _c("div", [
             _c("div", { staticClass: "_1side_menu" }, [
               _vm._m(0),
@@ -87917,7 +87928,19 @@ var render = function() {
                         )
                       ],
                       1
-                    )
+                    ),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c(
+                        "a",
+                        { attrs: { href: "/logout" } },
+                        [
+                          _c("Icon", { attrs: { type: "ios-speedometer" } }),
+                          _vm._v(" Logout\n                        ")
+                        ],
+                        1
+                      )
+                    ])
                   ])
                 ])
               ])
@@ -106266,7 +106289,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
       data: null,
       deletingIndex: -1,
       isDeleted: false
-    }
+    },
+    user: false
   },
   getters: {
     getCounter: function getCounter(state) {
@@ -106292,6 +106316,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     },
     setDeletingModalObj: function setDeletingModalObj(state, data) {
       state.deleteModalObj = data;
+    },
+    updateUser: function updateUser(state, data) {
+      state.user = data;
     }
   },
   actions: {

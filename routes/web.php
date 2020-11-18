@@ -32,10 +32,10 @@ Route::get('app/get_users', 'AdminController@getUser');
 Route::post('app/edit_user', 'AdminController@editUser');
 Route::post('app/user_login', 'AdminController@loginUser');
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::any('{slug}', function () {
-    return view('welcome');
-});
+
+Route::get('/logout', 'AdminController@logout');
+Route::get('/', 'AdminController@index');
+Route::any('{slug}', 'AdminController@index');
+
+
