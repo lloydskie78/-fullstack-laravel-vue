@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Tag;
 use App\User;
 use App\Category;
@@ -163,4 +164,25 @@ class AdminController extends Controller
     {
         return User::where('userType', '!=', 'User')->get();
     }
+
+    public function loginUser(Request $request)
+    {
+        //? request validation
+        
+        $this->validate($request, [
+            'email' => 'bail|required|email',
+            'password' => 'bail|required|min:8',
+        ]);
+        
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+            return response()->json([
+                'msg' => 'You are logged in!',
+            ]);
+        }else{
+            return response()->json([
+                'msg' => 'Incorrect login credentials!',
+            ], 401); //? The number is to change the status in order to generate error message on the frontend
+        }
+    }
 }
+ 
