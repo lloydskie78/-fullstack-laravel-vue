@@ -25,22 +25,30 @@
                         </li>
                         <li>
                             <router-link to="/tags">
-                                <Icon type="ios-speedometer"/> Tags
+                                <Icon type="ios-pricetags"/> Tags
                             </router-link>
                         </li>
                          <li>
                             <router-link to="/category">
-                                <Icon type="ios-speedometer"/> Category
+                                <Icon type="logo-buffer"/> Category
                             </router-link>
                         </li>
                         <li>
                             <router-link to="/adminusers">
-                                <Icon type="ios-speedometer"/> Users
+                                <Icon type="ios-contacts"/> Users
                             </router-link>
                         </li>
                         <li>
+                            <router-link to="/role">
+                                <Icon type="ios-people"/> Role Management
+                            </router-link>
+                        </li>
+
+
+
+                        <li>
                             <a href="/logout">
-                                <Icon type="ios-speedometer"/> Logout
+                                <Icon type="md-log-out"/> Logout
                             </a>
                         </li>
                     </ul>

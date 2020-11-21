@@ -10,7 +10,7 @@
     	        <span>Delete confirmation</span>
     	    </p>
     	    <div style="text-align:center">
-    	        <p>Are you sure you want to delete this tag?</p>
+    	        <p>Are you sure you want to delete this item?</p>
     	    </div>
     	    <div slot="footer">
     	        <Button type="default" size="large" @click="closeModal">Close</Button>
@@ -35,7 +35,7 @@ export default {
 			this.isDeleting = true
 			const res = await this.callApi('post', this.getDeleteModalObj.deleteUrl, this.getDeleteModalObj.data)
 			if(res.status === 200){
-                this.w('A tag has been deleted.')
+                this.w('An item has been deleted.')
                 this.$store.commit('setDeleteModal', true)
 			}else{
                 this.swr()

@@ -7,10 +7,10 @@
                         <h1>Login to the dashboard</h1>
                     </div>
                     <div class="space">
-                        <Input type="email" v-model="data.email" placeholder="Email" />
+                        <Input type="email" v-model="data.email" placeholder="Email" value="hello@hello.com"/>
                     </div>
                     <div class="space">
-                        <Input type="password" v-model="data.password" placeholder="******" />
+                        <Input type="password" v-model="data.password" password placeholder="******" />
                     </div>
                     <div class="login_footer">
                         <Button type="primary" @click="login" :disabled="this.isLogging" :loading="isLogging">{{ isLogging ? 'Loading ...' : 'Login'}}</Button>
@@ -26,8 +26,8 @@ export default {
     data() {
         return {
             data : {
-                email: '',
-                password: ''
+                email: 'hello@hello.com',
+                password: 'Taloy123'
             },
             isLogging: false
         }

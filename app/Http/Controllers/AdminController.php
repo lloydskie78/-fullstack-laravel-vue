@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Tag;
 use App\User;
+use App\Role;
 use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -221,5 +222,42 @@ class AdminController extends Controller
             ], 401); //? The number is to change the status in order to generate error message on the frontend
         }
     }
-}
+
+    public function addRole(Request $request)
+    {
+        $this->validate($request, [
+            'roleName' => 'required',
+        ]);
+
+        return Role::create([
+            'roleName' => $request->roleName,
+        ]);
+
+    }
+
+    public function getRole()
+    {
+        return Role::all();
+    }
+
+    public function editRole(Request $request)
+    {
+        $this->validate($request, [
+            'roleName' => 'required',
+        ]);
+
+        return Role::where('id', $request->id)->update([
+            'roleName' => $request->roleName
+        ]);
+
+    }
+
+    public function deleteRole(Request $request)
+    {   
+        $this->validate($request, [
+            'id' => 'required',
+        ]);
+        return Role::where('id', $request->id)->delete();
+    }
+ }
  

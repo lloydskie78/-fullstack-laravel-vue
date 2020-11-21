@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminCheck;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,21 +17,31 @@ use Illuminate\Support\Facades\Route;
 
 
 
+Route::prefix('app')->middleware(['admincheck'])->group(function() {
+    Route::post('/create_tag', 'AdminController@addTag');
+    Route::get('/get_tags', 'AdminController@getTag');
+    Route::post('/edit_tag', 'AdminController@editTag');
+    Route::post('/delete_tag', 'AdminController@deleteTag');
+    Route::post('/upload', 'AdminController@upload');
+    Route::post('/delete_image', 'AdminController@deleteImage');
+    Route::post('/create_category', 'AdminController@addCategory');
+    Route::get('/get_category', 'AdminController@getCategory');
+    Route::post('/edit_category', 'AdminController@editCategory');
+    Route::post('/delete_category', 'AdminController@deleteCategory');
+    Route::post('/create_user', 'AdminController@createUser');
+    Route::get('/get_users', 'AdminController@getUser');
+    Route::post('/edit_user', 'AdminController@editUser');
+    Route::post('/user_login', 'AdminController@loginUser');
 
-Route::post('app/create_tag', 'AdminController@addTag');
-Route::get('app/get_tags', 'AdminController@getTag');
-Route::post('app/edit_tag', 'AdminController@editTag');
-Route::post('app/delete_tag', 'AdminController@deleteTag');
-Route::post('app/upload', 'AdminController@upload');
-Route::post('app/delete_image', 'AdminController@deleteImage');
-Route::post('app/create_category', 'AdminController@addCategory');
-Route::get('app/get_category', 'AdminController@getCategory');
-Route::post('app/edit_category', 'AdminController@editCategory');
-Route::post('app/delete_category', 'AdminController@deleteCategory');
-Route::post('app/create_user', 'AdminController@createUser');
-Route::get('app/get_users', 'AdminController@getUser');
-Route::post('app/edit_user', 'AdminController@editUser');
-Route::post('app/user_login', 'AdminController@loginUser');
+
+    // ?Roles routes
+    Route::post('/create_role', 'AdminController@addRole');
+    Route::get('/get_roles', 'AdminController@getRole');
+    Route::post('/edit_role', 'AdminController@editRole');
+    Route::post('/delete_role', 'AdminController@deleteRole');
+});
+
+
 
 
 
