@@ -61,7 +61,7 @@
                 <!-- TAG ADDING MODAL -->
                 <Modal
                     v-model="addModal"
-                    title="Add Tag"
+                    title="Add User"
                     :mask-closable="false"
                     :closable="false"
                 >
@@ -87,11 +87,12 @@
                     />
                     </div>
                     <div class="space">
-                        <Select v-model="data.userType" placeholder="Select User Type">
-                            <Option value="Admin">Admin</Option>
-                            <Option value="Editor">Editor</Option>
+                        <Select v-model="data.role_id" placeholder="Select user type">
+                            <Option :value="r.id" v-for="(r, i) in roles" :key="i" v-if="roles.length">{{r.rolename}}</Option>
+                            <!-- <Option value="Editor" >Editor</Option> -->
                         </Select>
                     </div>
+                    
                     <div slot="footer">
                         <Button type="default" @click="addModal = false"
                             >Close</Button
@@ -134,7 +135,7 @@
                     />
                     </div>
                     <div class="space">
-                        <Select v-model="editData.userType" placeholder="Select User Type">
+                        <Select v-model="editData.role_id" placeholder="Select User Type">
                             <Option value="Admin">Admin</Option>
                             <Option value="Editor">Editor</Option>
                         </Select>
@@ -174,9 +175,9 @@
 </template>
 
 <script>
+import deleteModal from "../components/deleteModal.vue";
 import { mapGetters } from "vuex";
 
-import deleteModal from "../components/deleteModal.vue";
 
 export default {
     data() {
@@ -185,7 +186,7 @@ export default {
                 fullName: '',
                 email: '',
                 password: '',
-                userType: 'Admin',
+                role_id: null
             },
             addModal: false,
             editModal: false,
@@ -199,7 +200,8 @@ export default {
             isDeleting: false,
             deleteItem: {},
             delIndex: -1,
-            websiteSettings: []
+            websiteSettings: [],
+            roles: []
         };
     },
     methods: {
@@ -210,12 +212,12 @@ export default {
                 return this.e("EMail is required!");
             if (this.data.password.trim() == "")
                 return this.e("Password is required!");
-            if (this.data.userType.trim() == "")
+            if (!this.data.role_id)
                 return this.e("User type is required!");
 
             const res = await this.callApi("post", "app/create_user", this.data);
             if (res.status === 201) {
-                this.tags.unshift(res.data);
+                this.users.unshift(res.data);
                 this.s("User added successfully");
                 this.addModal = false;
                 this.data.tagName = "";
@@ -234,7 +236,7 @@ export default {
                 return this.e("Fullname is required!");
             if (this.editData.email.trim() == "")
                 return this.e("EMail is required!");
-            if (this.editData.userType.trim() == "")
+            if (!this.editData.role_id)
                 return this.e("User type is required!");
 
             const res = await this.callApi(
@@ -300,10 +302,21 @@ export default {
         }
     },
     async created() {
-        const res = await this.callApi("get", "app/get_users");
-        if (res.status === 200) {
+
+        const [res, resRole] = await Promise.all([
+            this.callApi("get", "app/get_users"),
+            this.callApi("get", "app/get_roles")
+        ])
+
+        if (res.status == 200) {
             this.users = res.data;
         } else {
+            this.swr();
+        }
+        if(resRole.status == 200){
+            this.roles = resRole.data
+            console.log(this.roles)
+        }else{
             this.swr();
         }
     },

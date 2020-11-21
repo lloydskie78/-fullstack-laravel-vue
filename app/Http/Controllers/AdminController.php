@@ -151,14 +151,14 @@ class AdminController extends Controller
             'fullName' => 'required',
             'email' => 'bail|required|email|unique:users', //? Unique from users table
             'password' => 'bail|required|min:8',
-            'userType' => 'required'
+            'role_id' => 'required'
         ]);
         $password = bcrypt($request->password);
         $user = User::create([
             'fullName' => $request->fullName,
             'email' => $request->email,
             'password' => $password,
-            'userType' => $request->userType,
+            'role_id' => $request->role_id,
         ]);
 
         return $user;
@@ -190,7 +190,7 @@ class AdminController extends Controller
 
     public function getUser()
     {
-        return User::where('userType', '!=', 'User')->get();
+        return User::get();
     }
 
     public function loginUser(Request $request)
@@ -205,11 +205,10 @@ class AdminController extends Controller
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $user = Auth::user();
 
-            if($user->userType == 'User'){
+            if($user->role->isAdmin == 0 ){
                 Auth::logout();
                 return response()->json([
                     'msg' => 'Not an Admin',
-                    'user' =>  $user,
                 ], 401);
             }
             
