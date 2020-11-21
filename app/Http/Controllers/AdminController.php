@@ -252,12 +252,12 @@ class AdminController extends Controller
 
     }
 
-//     public function deleteTag(Request $request)
-//     {   
-//         $this->validate($request, [
-//             'id' => 'required',
-//         ]);
-//         return Tag::where('id', $request->id)->delete();
-//     }
+    public function deleteRole(Request $request)
+    {   
+        $this->validate($request, [
+            'id' => 'required',
+        ]);
+        return Role::where('id', $request->id)->delete();
+    }
  }
  

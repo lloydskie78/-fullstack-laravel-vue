@@ -1982,7 +1982,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 res = _context.sent;
 
                 if (res.status === 200) {
-                  _this.w('A tag has been deleted.');
+                  _this.w('An item has been deleted.');
 
                   _this.$store.commit('setDeleteModal', true);
                 } else {
@@ -3327,7 +3327,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    deleteTag: function deleteTag() {
+    "delete": function _delete() {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
@@ -3338,15 +3338,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _this3.isDeleting = true;
                 _context3.next = 3;
-                return _this3.callApi("post", "app/delete_tag", _this3.deleteItem);
+                return _this3.callApi("post", "app/delete_role", _this3.deleteItem);
 
               case 3:
                 res = _context3.sent;
 
                 if (res.status === 200) {
-                  _this3.tags.splice(_this3.delIndex, 1);
+                  _this3.roles.splice(_this3.delIndex, 1);
 
-                  _this3.w("A tag has been deleted.");
+                  _this3.w("A role has been deleted.");
                 } else {
                   _this3.swr();
                 }
@@ -3373,16 +3373,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.editModal = true;
       this.index = index;
     },
-    showDelModal: function showDelModal(tag, i) {
+    showDelModal: function showDelModal(role, i) {
       var deleteModalObj = {
         showDeleteModal: true,
-        deleteUrl: "app/delete_tag",
-        data: tag,
+        deleteUrl: "app/delete_role",
+        data: role,
         deletingIndex: i,
         isDeleted: false
       };
       this.$store.commit("setDeletingModalObj", deleteModalObj);
-      console.log("delete method called"); // this.deleteItem = tag
+      console.log("delete method called"); // this.deleteItem = role
       // this.delIndex = i
       // this.showDeleteModal = true
     }
@@ -3425,7 +3425,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       console.log(obj);
 
       if (obj.isDeleted) {
-        this.tags.splice(obj.delIndex, 1);
+        this.roles.splice(obj.delIndex, 1);
       }
     }
   }
@@ -86952,7 +86952,7 @@ var render = function() {
           ),
           _vm._v(" "),
           _c("div", { staticStyle: { "text-align": "center" } }, [
-            _c("p", [_vm._v("Are you sure you want to delete this tag?")])
+            _c("p", [_vm._v("Are you sure you want to delete this item?")])
           ]),
           _vm._v(" "),
           _c(

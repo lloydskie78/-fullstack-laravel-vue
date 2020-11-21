@@ -199,16 +199,16 @@ export default {
                 }
             }
         },
-        async deleteTag() {
+        async delete() {
             this.isDeleting = true;
             const res = await this.callApi(
                 "post",
-                "app/delete_tag",
+                "app/delete_role",
                 this.deleteItem
             );
             if (res.status === 200) {
-                this.tags.splice(this.delIndex, 1);
-                this.w("A tag has been deleted.");
+                this.roles.splice(this.delIndex, 1);
+                this.w("A role has been deleted.");
             } else {
                 this.swr();
             }
@@ -230,17 +230,17 @@ export default {
 
 
         },
-        showDelModal(tag, i) {
+        showDelModal(role, i) {
             const deleteModalObj = {
                 showDeleteModal: true,
-                deleteUrl: "app/delete_tag",
-                data: tag,
+                deleteUrl: "app/delete_role",
+                data: role,
                 deletingIndex: i,
                 isDeleted: false
             };
             this.$store.commit("setDeletingModalObj", deleteModalObj);
             console.log("delete method called");
-            // this.deleteItem = tag
+            // this.deleteItem = role
             // this.delIndex = i
             // this.showDeleteModal = true
         }
@@ -263,7 +263,7 @@ export default {
         getDeleteModalObj(obj) {
             console.log(obj);
             if (obj.isDeleted) {
-                this.tags.splice(obj.delIndex, 1);
+                this.roles.splice(obj.delIndex, 1);
             }
         }
     }

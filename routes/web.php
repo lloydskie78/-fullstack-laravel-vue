@@ -38,6 +38,7 @@ Route::prefix('app')->middleware(['admincheck'])->group(function() {
     Route::post('/create_role', 'AdminController@addRole');
     Route::get('/get_roles', 'AdminController@getRole');
     Route::post('/edit_role', 'AdminController@editRole');
+    Route::post('/delete_role', 'AdminController@deleteRole');
 });
 
 
