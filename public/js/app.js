@@ -2971,8 +2971,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       data: {
-        email: '',
-        password: ''
+        email: 'hello@hello.com',
+        password: 'Taloy123'
       },
       isLogging: false
     };
@@ -87494,7 +87494,11 @@ var render = function() {
               { staticClass: "space" },
               [
                 _c("Input", {
-                  attrs: { type: "email", placeholder: "Email" },
+                  attrs: {
+                    type: "email",
+                    placeholder: "Email",
+                    value: "hello@hello.com"
+                  },
                   model: {
                     value: _vm.data.email,
                     callback: function($$v) {
@@ -87512,7 +87516,11 @@ var render = function() {
               { staticClass: "space" },
               [
                 _c("Input", {
-                  attrs: { type: "password", placeholder: "******" },
+                  attrs: {
+                    type: "password",
+                    password: "",
+                    placeholder: "******"
+                  },
                   model: {
                     value: _vm.data.password,
                     callback: function($$v) {

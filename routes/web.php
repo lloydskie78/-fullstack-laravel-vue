@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::prefix('app')->middleware([AdminCheck::class])->group(function() {
+Route::prefix('app')->middleware(['admincheck'])->group(function() {
     Route::post('/create_tag', 'AdminController@addTag');
     Route::get('/get_tags', 'AdminController@getTag');
     Route::post('/edit_tag', 'AdminController@editTag');
