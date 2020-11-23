@@ -89036,16 +89036,12 @@ var render = function() {
                                   "router-link",
                                   { attrs: { to: menuItem.name } },
                                   [
-                                    _c("Icon", {
-                                      attrs: { type: "ios-speedometer" }
-                                    }),
                                     _vm._v(
-                                      " " +
+                                      "\n                            " +
                                         _vm._s(menuItem.resourceName) +
                                         "\n                        "
                                     )
-                                  ],
-                                  1
+                                  ]
                                 )
                               ],
                               1
