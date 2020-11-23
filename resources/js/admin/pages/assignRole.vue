@@ -63,7 +63,7 @@ export default {
                 {resourceName: 'Admin Users', read: false, write: false, update: false, delete: false, name: 'adminusers'},
                 {resourceName: 'Role', read: false, write: false, update: false, delete: false, name: 'role'},
                 {resourceName: 'Assign Role', read: false, write: false, update: false, delete: false, name: 'assignRole'},
-                {resourceName: 'Home', read: false, write: false, update: false, delete: false, name: 'home'},
+                {resourceName: 'Home', read: false, write: false, update: false, delete: false, name: '/'},
             ],
             defaultResources: [
                 {resourceName: 'Tags', read: false, write: false, update: false, delete: false, name: 'tags'},
@@ -71,7 +71,7 @@ export default {
                 {resourceName: 'Admin Users', read: false, write: false, update: false, delete: false, name: 'adminusers'},
                 {resourceName: 'Role', read: false, write: false, update: false, delete: false, name: 'role'},
                 {resourceName: 'Assign Role', read: false, write: false, update: false, delete: false, name: 'assignRole'},
-                {resourceName: 'Home', read: false, write: false, update: false, delete: false, name: 'home'},
+                {resourceName: 'Home', read: false, write: false, update: false, delete: false, name: '/'},
             ],
             roles: [
 
@@ -86,7 +86,7 @@ export default {
                 this.s('Role has been assigned successfully')
                 let index = this.roles.findIndex(role => role.id == this.data.id)
                 this.roles[index].permission = data
-            }else{
+            }else{ 
                 this.swr()
             }
         },

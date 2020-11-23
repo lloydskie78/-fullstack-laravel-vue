@@ -2618,7 +2618,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         write: false,
         update: false,
         "delete": false,
-        name: 'home'
+        name: '/'
       }],
       defaultResources: [{
         resourceName: 'Tags',
@@ -2661,7 +2661,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         write: false,
         update: false,
         "delete": false,
-        name: 'home'
+        name: '/'
       }],
       roles: []
     };
@@ -4186,8 +4186,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user'],
+  props: ['user', 'permission'],
   data: function data() {
     return {
       isLoggedIn: false
@@ -4195,6 +4197,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.$store.commit('updateUser', this.user);
+    console.log(this.permission);
   }
 });
 
@@ -89014,115 +89017,51 @@ var render = function() {
                 _vm._m(1),
                 _vm._v(" "),
                 _c("div", { staticClass: "_1side_menu_list" }, [
-                  _c("ul", { staticClass: "_1side_menu_list_ul" }, [
-                    _c(
-                      "li",
-                      [
+                  _c(
+                    "ul",
+                    { staticClass: "_1side_menu_list_ul" },
+                    [
+                      _vm._l(_vm.permission, function(menuItem, i) {
+                        return _vm.permission.length && menuItem.read
+                          ? _c(
+                              "li",
+                              { key: i },
+                              [
+                                _c(
+                                  "router-link",
+                                  { attrs: { to: menuItem.name } },
+                                  [
+                                    _c("Icon", {
+                                      attrs: { type: "ios-speedometer" }
+                                    }),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(menuItem.resourceName) +
+                                        "\n                        "
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          : _vm._e()
+                      }),
+                      _vm._v(" "),
+                      _c("li", [
                         _c(
-                          "router-link",
-                          { attrs: { to: "/" } },
+                          "a",
+                          { attrs: { href: "/logout" } },
                           [
-                            _c("Icon", { attrs: { type: "ios-speedometer" } }),
-                            _vm._v(" Dashboard\n                        ")
+                            _c("Icon", { attrs: { type: "md-log-out" } }),
+                            _vm._v(" Logout\n                        ")
                           ],
                           1
                         )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      [
-                        _c(
-                          "router-link",
-                          { attrs: { to: "/tags" } },
-                          [
-                            _c("Icon", { attrs: { type: "ios-pricetags" } }),
-                            _vm._v(" Tags\n                        ")
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      [
-                        _c(
-                          "router-link",
-                          { attrs: { to: "/category" } },
-                          [
-                            _c("Icon", { attrs: { type: "logo-buffer" } }),
-                            _vm._v(" Category\n                        ")
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      [
-                        _c(
-                          "router-link",
-                          { attrs: { to: "/adminusers" } },
-                          [
-                            _c("Icon", { attrs: { type: "ios-contacts" } }),
-                            _vm._v(" Users\n                        ")
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      [
-                        _c(
-                          "router-link",
-                          { attrs: { to: "/role" } },
-                          [
-                            _c("Icon", { attrs: { type: "ios-people" } }),
-                            _vm._v(" Role Management\n                        ")
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      [
-                        _c(
-                          "router-link",
-                          { attrs: { to: "/assignRole" } },
-                          [
-                            _c("Icon", { attrs: { type: "md-person-add" } }),
-                            _vm._v(" Assign role\n                        ")
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("li", [
-                      _c(
-                        "a",
-                        { attrs: { href: "/logout" } },
-                        [
-                          _c("Icon", { attrs: { type: "md-log-out" } }),
-                          _vm._v(" Logout\n                        ")
-                        ],
-                        1
-                      )
-                    ])
-                  ])
+                      ])
+                    ],
+                    2
+                  )
                 ])
               ])
             ]),

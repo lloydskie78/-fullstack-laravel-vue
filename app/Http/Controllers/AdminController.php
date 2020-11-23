@@ -17,7 +17,8 @@ class AdminController extends Controller
     {   //? check first if user is admin or not and if the path is login
         if(!Auth::check() && $request->path() != 'login'){
             return redirect('/login');
-        }else{
+        }
+        if(!Auth::check() && $request->path() == 'login'){
             return view('welcome');
         }
         
@@ -29,8 +30,29 @@ class AdminController extends Controller
         if($request->path() == 'login'){
             return redirect('/');
         }
-        
+
+        return $this->checkForPermission($user, $request);
+        return view('notfound');
         return view('welcome');
+    }
+
+    public function checkForPermission($user, $request)
+    {
+        $permission = json_decode($user->role->permission);
+        $hasPermission = false;
+        if(!$permission) return view('welcome');
+
+        foreach($permission as $p){
+            if($p->name==$request->path()){
+                if($p->read){
+                    $hasPermission = true;
+                }
+            }
+        }
+
+        if($hasPermission) return view('welcome');
+        return view('notfound');
+
     }
 
     public function logout()
