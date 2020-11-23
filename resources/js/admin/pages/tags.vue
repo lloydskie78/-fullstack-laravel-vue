@@ -8,9 +8,9 @@
                 >
                     <p class="_title0">
                         Tags
-                        <Button @click="addModal = true"
-                            ><Icon type="ios-add" /> Add Tag</Button
-                        >
+                        <Button @click="addModal = true" v-if="isWritePermitted">
+                            <Icon type="ios-add" /> Add Tag
+                        </Button>
                     </p>
 
                     <div class="_overflow _table_div">
@@ -37,12 +37,14 @@
                                     <Button
                                         type="info"
                                         size="small"
+                                        v-if="isUpdatePermitted"
                                         @click="showEditModal(tag, i)"
                                         >Edit</Button
                                     >
                                     <Button
                                         type="error"
                                         size="small"
+                                        v-if="isDeletePermitted"
                                         @click="showDelModal(tag, i)"
                                         :loading="tag.isDeleting"
                                         >Delete</Button

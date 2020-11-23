@@ -18,41 +18,13 @@
                 <!--~~~ MENU LIST ~~~~~~-->
                 <div class="_1side_menu_list">
                     <ul class="_1side_menu_list_ul">
-                        <li v-for="(menuItem, i) in permission" 
-                        :key="i" v-if="permission.length && menuItem.read">
+                        <li v-for="(menuItem, i) in permissions" 
+                        :key="i" v-if="permissions.length && menuItem.read">
 
                             <router-link :to="menuItem.name">
                                 <Icon type="ios-speedometer"/> {{ menuItem.resourceName }}
                             </router-link>
                         </li>
-                        <!-- <li>
-                            <router-link to="/tags">
-                                <Icon type="ios-pricetags"/> Tags
-                            </router-link>
-                        </li>
-                         <li>
-                            <router-link to="/category">
-                                <Icon type="logo-buffer"/> Category
-                            </router-link>
-                        </li>
-                        <li>
-                            <router-link to="/adminusers">
-                                <Icon type="ios-contacts"/> Users
-                            </router-link>
-                        </li>
-                        <li>
-                            <router-link to="/role">
-                                <Icon type="ios-people"/> Role Management
-                            </router-link>
-                        </li>
-                        <li>
-                            <router-link to="/assignRole">
-                                <Icon type="md-person-add"/> Assign role
-                            </router-link>
-                        </li> -->
-
-
-
                         <li>
                             <a href="/logout">
                                 <Icon type="md-log-out"/> Logout
@@ -85,15 +57,15 @@
 
 <script>
 export default {
-    props: ['user', 'permission'],
+    props: ['user', 'permissions'],
     data(){
         return {
             isLoggedIn : false
         }
     },
     created() {
-        this.$store.commit('updateUser', this.user)
-        console.log(this.permission)
+        this.$store.commit('setUpdateUser', this.user)
+        this.$store.commit('setUserPermission', this.permissions)
     },
 }
 </script>
