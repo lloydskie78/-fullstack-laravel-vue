@@ -8,7 +8,7 @@
                 >
                     <p class="_title0">
                         Role Management
-                        <Button @click="addModal = true">
+                        <Button @click="addModal = true" v-if="isWritePermitted">
                             <Icon type="ios-add" /> Add New Role
                         </Button>
                     </p>
@@ -37,12 +37,14 @@
                                     <Button
                                         type="info"
                                         size="small"
+                                        v-if="isUpdatePermitted"
                                         @click="showEditModal(role, i)"
                                         >Edit</Button
                                     >
                                     <Button
                                         type="error"
                                         size="small"
+                                        v-if="isDeletePermitted"
                                         @click="showDelModal(role, i)"
                                         :loading="role.isDeleting"
                                         >Delete</Button
