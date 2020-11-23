@@ -43,6 +43,11 @@
                                 <Icon type="ios-people"/> Role Management
                             </router-link>
                         </li>
+                        <li>
+                            <router-link to="/assignRole">
+                                <Icon type="md-person-add"/> Assign role
+                            </router-link>
+                        </li>
 
 
 
