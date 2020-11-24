@@ -8,10 +8,21 @@ Vue.use(ViewUI);
 import common from './common'
 Vue.mixin(common)
 
-Vue.component('mainapp', require('./components/mainapp.vue').default)
+import Editor from 'vue-editor-js'
 
+Vue.use(Editor)
+
+Vue.component('mainapp', require('./components/mainapp.vue').default)
 const app = new Vue({
     el: '#app',
     router,
     store
 })
+
+
+
+
+
+
+                        //! REMEMBER!
+//? app.js is the main entry point of vue in our laravel project
