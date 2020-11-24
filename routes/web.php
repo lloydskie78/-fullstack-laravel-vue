@@ -42,6 +42,8 @@ Route::prefix('app')->middleware(['admincheck'])->group(function() {
     Route::post('assign_roles', 'AdminController@assignRole');
 });
 
+Route::post('createBlog', 'AdminController@uploadEditorImage');
+
 
 
 

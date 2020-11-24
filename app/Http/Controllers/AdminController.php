@@ -104,6 +104,24 @@ class AdminController extends Controller
         $request->file->move(public_path('uploads'),$imgName);
         return $imgName;
     }
+    
+    //? FOR EDITOR JS IMAGE UPLOAD
+    public function uploadEditorImage(Request $request)
+    {
+        $this->validate($request, [
+            'image' => 'required|mimes:jpeg,jpg,png',
+        ]);
+
+        $imgName = time().'.'.$request->image->extension();
+        $request->image->move(public_path('uploads'),$imgName);
+        return \response()->json([
+            'success' => 1,
+            'file' => [
+                'url' => "http://localhost:8000/uploads/$imgName"
+            ]
+        ]);
+        return $imgName;
+    }
 
     public function deleteImage(Request $request)
     {
@@ -292,5 +310,6 @@ class AdminController extends Controller
             'permission' => $request->permission
         ]);
     }
+    
  }
  

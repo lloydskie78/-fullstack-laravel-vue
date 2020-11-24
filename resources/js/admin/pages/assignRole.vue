@@ -58,20 +58,22 @@ export default {
             },
             isSending: false,
             resources: [
+                {resourceName: 'Home', read: false, write: false, update: false, delete: false, name: '/'},
                 {resourceName: 'Tags', read: false, write: false, update: false, delete: false, name: 'tags'},
                 {resourceName: 'Category', read: false, write: false, update: false, delete: false, name: 'category'},
+                {resourceName: 'Create Blogs', read: false, write: false, update: false, delete: false, name: 'createBlog'},
                 {resourceName: 'Admin Users', read: false, write: false, update: false, delete: false, name: 'adminusers'},
                 {resourceName: 'Role', read: false, write: false, update: false, delete: false, name: 'role'},
                 {resourceName: 'Assign Role', read: false, write: false, update: false, delete: false, name: 'assignRole'},
-                {resourceName: 'Home', read: false, write: false, update: false, delete: false, name: '/'},
             ],
             defaultResources: [
+                {resourceName: 'Home', read: false, write: false, update: false, delete: false, name: '/'},
                 {resourceName: 'Tags', read: false, write: false, update: false, delete: false, name: 'tags'},
                 {resourceName: 'Category', read: false, write: false, update: false, delete: false, name: 'category'},
+                {resourceName: 'Create Blogs', read: false, write: false, update: false, delete: false, name: 'createBlog'},
                 {resourceName: 'Admin Users', read: false, write: false, update: false, delete: false, name: 'adminusers'},
                 {resourceName: 'Role', read: false, write: false, update: false, delete: false, name: 'role'},
                 {resourceName: 'Assign Role', read: false, write: false, update: false, delete: false, name: 'assignRole'},
-                {resourceName: 'Home', read: false, write: false, update: false, delete: false, name: '/'},
             ],
             roles: [
 
@@ -111,7 +113,6 @@ export default {
                     this.resources = JSON.parse(res.data[0].permission)
                 }
             }
-           
         } else {
             this.swr();
         }

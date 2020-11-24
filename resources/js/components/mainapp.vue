@@ -22,7 +22,7 @@
                         :key="i" v-if="permissions.length && menuItem.read">
 
                             <router-link :to="menuItem.name">
-                                <Icon type="ios-speedometer"/> {{ menuItem.resourceName }}
+                                {{ menuItem.resourceName }}
                             </router-link>
                         </li>
                         <li>
