@@ -44,8 +44,12 @@ Route::prefix('app')->middleware(['admincheck'])->group(function() {
 
 Route::post('createBlog', 'AdminController@uploadEditorImage');
 
+Route::get('slug', 'AdminController@slug');
 
 
+//BLog
+
+Route::post('create_blog', 'AdminController@createBlog');
 
 
 Route::get('/logout', 'AdminController@logout');

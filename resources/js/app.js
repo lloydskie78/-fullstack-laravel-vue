@@ -6,7 +6,10 @@ import store from './store'
 import 'view-design/dist/styles/iview.css'
 Vue.use(ViewUI);
 import common from './common'
+import jsonToHtml from './jsonToHtml'
+
 Vue.mixin(common)
+Vue.mixin(jsonToHtml)
 
 import Editor from 'vue-editor-js'
 
