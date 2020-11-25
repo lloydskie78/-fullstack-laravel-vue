@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
+use App\Blog;
 use App\Tag;
 use App\User;
 use App\Role;
 use App\Category;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -15,19 +17,20 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {   //? check first if user is admin or not and if the path is login
-        if(!Auth::check() && $request->path() != 'login'){
-            return redirect('/login');
-        }
-        if(!Auth::check() && $request->path() == 'login'){
-            return view('welcome');
-        }
-        
-        $user = Auth::user();
-        if($user->userType == 'User'){
+        if (!Auth::check() && $request->path() != 'login') {
             return redirect('/login');
         }
 
-        if($request->path() == 'login'){
+        if (!Auth::check() && $request->path() == 'login') {
+            return view('welcome');
+        }
+
+        $user = Auth::user();
+        if ($user->userType == 'User') {
+            return redirect('/login');
+        }
+
+        if ($request->path() == 'login') {
             return redirect('/');
         }
 
@@ -40,29 +43,28 @@ class AdminController extends Controller
     {
         $permission = json_decode($user->role->permission);
         $hasPermission = false;
-        if(!$permission) return view('welcome');
+        if (!$permission) return view('welcome');
 
-        foreach($permission as $p){
-            if($p->name==$request->path()){
-                if($p->read){
+        foreach ($permission as $p) {
+            if ($p->name == $request->path()) {
+                if ($p->read) {
                     $hasPermission = true;
                 }
             }
         }
 
-        if($hasPermission) return view('welcome');
+        if ($hasPermission) return view('welcome');
         return view('notfound');
-
     }
 
     public function logout()
-    {   
+    {
         Auth::logout();
         return \redirect('login');
     }
 
     public function addTag(Request $request)
-    {   
+    {
         $this->validate($request, [
             'tagName' => 'required',
         ]);
@@ -72,7 +74,7 @@ class AdminController extends Controller
     }
 
     public function editTag(Request $request)
-    {   
+    {
         $this->validate($request, [
             'tagName' => 'required',
             'id' => 'required',
@@ -82,8 +84,8 @@ class AdminController extends Controller
         ]);
     }
 
-     public function deleteTag(Request $request)
-    {   
+    public function deleteTag(Request $request)
+    {
         $this->validate($request, [
             'id' => 'required',
         ]);
@@ -100,11 +102,11 @@ class AdminController extends Controller
         $this->validate($request, [
             'file' => 'required|mimes:jpeg,jpg,png',
         ]);
-        $imgName = time().'.'.$request->file->extension();
-        $request->file->move(public_path('uploads'),$imgName);
+        $imgName = time() . '.' . $request->file->extension();
+        $request->file->move(public_path('uploads'), $imgName);
         return $imgName;
     }
-    
+
     //? FOR EDITOR JS IMAGE UPLOAD
     public function uploadEditorImage(Request $request)
     {
@@ -112,8 +114,8 @@ class AdminController extends Controller
             'image' => 'required|mimes:jpeg,jpg,png',
         ]);
 
-        $imgName = time().'.'.$request->image->extension();
-        $request->image->move(public_path('uploads'),$imgName);
+        $imgName = time() . '.' . $request->image->extension();
+        $request->image->move(public_path('uploads'), $imgName);
         return \response()->json([
             'success' => 1,
             'file' => [
@@ -130,13 +132,13 @@ class AdminController extends Controller
         return 'done';
     }
 
-    public function deleteFIleFromServer($fileName, $hasFullPath=false)
+    public function deleteFIleFromServer($fileName, $hasFullPath = false)
     {
-        if(!$hasFullPath){
-            $filePath = public_path().'/uploads/'.$fileName;
+        if (!$hasFullPath) {
+            $filePath = public_path() . '/uploads/' . $fileName;
         }
-        
-        if(file_exists($filePath)){
+
+        if (file_exists($filePath)) {
             @unlink($filePath);
         }
         return;
@@ -162,7 +164,7 @@ class AdminController extends Controller
     public function editCategory(Request $request)
     {
         $this->validate($request, [
-             'categoryName' => 'required',
+            'categoryName' => 'required',
             'iconImage' => 'required'
         ]);
         return Category::where('id', $request->id)->update([
@@ -174,9 +176,9 @@ class AdminController extends Controller
     public function deleteCategory(Request $request)
     {
         //!Delete the original file from the server first
-        
+
         $this->deleteFIleFromServer($request->iconImage);
-        
+
         $this->validate($request, [
             'id' => 'required',
         ]);
@@ -219,7 +221,7 @@ class AdminController extends Controller
             'userType' => $request->userType,
         ];
 
-        if($request->password){
+        if ($request->password) {
             $password = bcrypt($request->password);
             $data['password'] = $password;
         }
@@ -236,26 +238,26 @@ class AdminController extends Controller
     public function loginUser(Request $request)
     {
         //? request validation
-        
+
         $this->validate($request, [
             'email' => 'bail|required|email',
             'password' => 'bail|required|min:8',
         ]);
-        
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
 
-            if($user->role->isAdmin == 0 ){
+            if ($user->role->isAdmin == 0) {
                 Auth::logout();
                 return response()->json([
                     'msg' => 'Not an Admin',
                 ], 401);
             }
-            
+
             return response()->json([
                 'msg' => 'You are logged in!',
             ]);
-        }else{
+        } else {
             return response()->json([
                 'msg' => 'Incorrect login credentials!',
             ], 401); //? The number is to change the status in order to generate error message on the frontend
@@ -271,7 +273,6 @@ class AdminController extends Controller
         return Role::create([
             'roleName' => $request->roleName,
         ]);
-
     }
 
     public function getRole()
@@ -288,17 +289,16 @@ class AdminController extends Controller
         return Role::where('id', $request->id)->update([
             'roleName' => $request->roleName
         ]);
-
     }
 
     public function deleteRole(Request $request)
-    {   
+    {
         $this->validate($request, [
             'id' => 'required',
         ]);
         return Role::where('id', $request->id)->delete();
     }
-    
+
     public function assignRole(Request $request)
     {
         $this->validate($request, [
@@ -310,6 +310,30 @@ class AdminController extends Controller
             'permission' => $request->permission
         ]);
     }
-    
- }
- 
+
+    public function slug()
+    {
+        $title = 'This is a nice title changed';
+
+        return Blog::create([
+            'title' => $title,
+            'post' => 'some post',
+            'post_excerpt' => 'aead',
+            'user_id' => 1,
+            'metaDescription' => 'aead',
+        ]);
+        return $title;
+    }
+
+    public function createBlog(Request $request)
+    {
+        return Blog::create([
+            'title' => $request->title,
+            'post' => $request->post,
+            'post_excerpt' => $request->post_excerpt,
+            'user_id' => Auth::user()->id,
+            'metaDescription' => $request->metaDescription,
+            'jsonData' => $request->jsonData,
+        ]);
+    }
+}
