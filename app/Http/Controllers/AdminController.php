@@ -379,4 +379,9 @@ class AdminController extends Controller
             ], 400);
         }
     }
+
+    public function blogdata()
+    {
+        return Blog::with(['tag', 'cat'])->get();
+    }
 }
