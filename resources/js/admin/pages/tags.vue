@@ -255,7 +255,7 @@ export default {
         getDeleteModalObj(obj) {
             console.log(obj);
             if (obj.isDeleted) {
-                this.tags.splice(obj.delIndex, 1);
+                this.tags.splice(this.delIndex, 1);
             }
         }
     }

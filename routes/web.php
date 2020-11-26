@@ -43,6 +43,8 @@ Route::prefix('app')->middleware(['admincheck'])->group(function() {
 
     //? BLOG
     Route::post('create_blog', 'AdminController@createBlog');
+    Route::get('blogsdata', 'AdminController@blogdata'); //? Getting the blogs data
+    Route::post('delete_blog', 'AdminController@deleteBlog'); //? Getting the blogs data
 
 });
 

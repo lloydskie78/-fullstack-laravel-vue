@@ -61,17 +61,20 @@ export default {
                 {resourceName: 'Home', read: false, write: false, update: false, delete: false, name: '/'},
                 {resourceName: 'Tags', read: false, write: false, update: false, delete: false, name: 'tags'},
                 {resourceName: 'Category', read: false, write: false, update: false, delete: false, name: 'category'},
-                {resourceName: 'Create Blogs', read: false, write: false, update: false, delete: false, name: 'createBlog'},
-                {resourceName: 'Admin Users', read: false, write: false, update: false, delete: false, name: 'adminusers'},
+                {resourceName: 'Create blogs', read: false, write: false, update: false, delete: false, name: 'createBlog'},
+                {resourceName: 'Blogs', read: false, write: false, update: false, delete: false, name: 'blogs'},
+                {resourceName: 'Admin users', read: false, write: false, update: false, delete: false, name: 'adminusers'},
                 {resourceName: 'Role', read: false, write: false, update: false, delete: false, name: 'role'},
                 {resourceName: 'Assign Role', read: false, write: false, update: false, delete: false, name: 'assignRole'},
+
             ],
             defaultResources: [
                 {resourceName: 'Home', read: false, write: false, update: false, delete: false, name: '/'},
                 {resourceName: 'Tags', read: false, write: false, update: false, delete: false, name: 'tags'},
                 {resourceName: 'Category', read: false, write: false, update: false, delete: false, name: 'category'},
-                {resourceName: 'Create Blogs', read: false, write: false, update: false, delete: false, name: 'createBlog'},
-                {resourceName: 'Admin Users', read: false, write: false, update: false, delete: false, name: 'adminusers'},
+                {resourceName: 'Create blogs', read: false, write: false, update: false, delete: false, name: 'createBlog'},
+                {resourceName: 'Blogs', read: false, write: false, update: false, delete: false, name: 'blogs'},
+                {resourceName: 'Admin users', read: false, write: false, update: false, delete: false, name: 'adminusers'},
                 {resourceName: 'Role', read: false, write: false, update: false, delete: false, name: 'role'},
                 {resourceName: 'Assign Role', read: false, write: false, update: false, delete: false, name: 'assignRole'},
             ],
@@ -111,6 +114,7 @@ export default {
                 this.data.id = res.data[0].id
                 if(res.data[0].permission){
                     this.resources = JSON.parse(res.data[0].permission)
+                    // this.resources = this.defaultResources
                 }
             }
         } else {

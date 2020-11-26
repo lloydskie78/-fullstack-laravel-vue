@@ -265,7 +265,7 @@ export default {
         getDeleteModalObj(obj) {
             console.log(obj);
             if (obj.isDeleted) {
-                this.roles.splice(obj.delIndex, 1);
+                this.roles.splice(this.delIndex, 1);
             }
         }
     }

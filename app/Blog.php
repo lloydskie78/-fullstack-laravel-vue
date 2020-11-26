@@ -11,9 +11,9 @@ class Blog extends Model
 
     protected $guarded = [];
 
-    public function setTitleAttribute($title)
+    public function setSlugAttribute($title)
     {
-        $this->attributes['slug'] = $this->uniqueSlug($title, '-');
+        $this->attributes['slug'] = $this->uniqueSlug($title);
     }
 
     private function uniqueSlug($title)
