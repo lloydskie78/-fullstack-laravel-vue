@@ -105,7 +105,7 @@ export default {
             if(res.status == 200){
                 this.s('Blog has been created successfully')
             }else{
-                this.swr
+                this.swr()
             }
 
             this.isCreating = false
@@ -171,10 +171,11 @@ export default {
                 this.callApi('get', 'app/get_tags')
                 ])
 
-            if(cat.status == 200 && tag.status == 200){
+            if(cat.status == 200 || tag.status == 200){
                 this.category = cat.data
                 this.tag = tag.data
-            }else{
+            }
+            else{
                 this.swr()
             }
         }

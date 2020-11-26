@@ -332,40 +332,51 @@ class AdminController extends Controller
         $categories = $request->category_id;
         $tags = $request->tag_id;
 
-        $blogCat = [];
+        $blogCategories = [];
         $blogTag = [];
 
 
+        //! THE FOLLOWING CODE ARE FOR SAFE CODING 
+        //! CATCHING THE DATABASE ERROR AND DOING A ROLLBACK SO IT WOULDN'T INSERT
 
-        $blog =  Blog::create([
-            'title' => $request->title,
-            'post' => $request->post,
-            'post_excerpt' => $request->post_excerpt,
-            'user_id' => Auth::user()->id,
-            'metaDescription' => $request->metaDescription,
-            'jsonData' => $request->jsonData,
-        ]);
+        DB::beginTransaction();
 
-        //? Insertion to Blogcategory table
-        foreach ($categories as $c) {
-            array_push($blogCat, [
-                'category_id' => $c,
-                'blog_id' => $blog->id 
+        try {
+            $blog =  Blog::create([
+                'title' => $request->title,
+                'post' => $request->post,
+                'post_excerpt' => $request->post_excerpt,
+                'user_id' => Auth::user()->id,
+                'metaDescription' => $request->metaDescription,
+                'jsonData' => $request->jsonData,
             ]);
+
+            //? Insertion to Blogcategory table
+            foreach ($categories as $c) {
+                array_push($blogCategories, [
+                    'category_id' => $c,
+                    'blog_id' => $blog->id
+                ]);
+            }
+            Blogcategory::insert($blogCategories);
+
+            //? Insertion to BlogTag table
+            foreach ($tags as $t) {
+                array_push($blogTag, [
+                    'tag_id' => $t,
+                    'blog_id' => $blog->id
+                ]);
+            }
+            Blogtag::insert($blogTag);
+
+            DB::commit();
+            return 'done';
+
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return response()->json([
+                'msg' => 'Something went wrong!',
+            ], 400);
         }
-        Blogcategory::insert($blogCat);
-
-        //? Insertion to BlogTag table
-        foreach ($tags as $t) {
-            array_push($blogTag, [
-                'tag_id' => $t,
-                'blog_id' => $blog->id
-            ]);
-        }
-        Blogtag::insert($blogTag);
-
-
-
-        return 'done';
     }
 }
