@@ -50,7 +50,7 @@ Route::post('createBlog', 'AdminController@uploadEditorImage');
 
 Route::get('slug', 'AdminController@slug');
 
-
+Route::get('blogdata', 'AdminController@blogdata');
 
 
 

@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Blog extends Model
 {
@@ -22,5 +23,13 @@ class Blog extends Model
         $newCount = $count > 0 ? ++$count : '';
         return $newCount > 0 ? "$slug->$newCount" : $slug;
     }
+
+    public function tag()
+    {
+        return $this->belongsToMany('App\Tag', 'blogtags');
+    }
+    public function cat()
+    {
+        return $this->belongsToMany('App\Category', 'blogcategories');
+    }
 }
- 
