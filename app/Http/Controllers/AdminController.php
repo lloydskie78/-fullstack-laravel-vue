@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Blog;
 use App\Tag;
-use App\User;
+use App\Blog;
 use App\Role;
+use App\User;
 use App\Category;
+use App\Blogcategory;
+use App\Blogtag;
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -327,7 +329,15 @@ class AdminController extends Controller
 
     public function createBlog(Request $request)
     {
-        return Blog::create([
+        $categories = $request->category_id;
+        $tags = $request->tag_id;
+
+        $blogCat = [];
+        $blogTag = [];
+
+
+
+        $blog =  Blog::create([
             'title' => $request->title,
             'post' => $request->post,
             'post_excerpt' => $request->post_excerpt,
@@ -335,5 +345,27 @@ class AdminController extends Controller
             'metaDescription' => $request->metaDescription,
             'jsonData' => $request->jsonData,
         ]);
+
+        //? Insertion to Blogcategory table
+        foreach ($categories as $c) {
+            array_push($blogCat, [
+                'category_id' => $c,
+                'blog_id' => $blog->id 
+            ]);
+        }
+        Blogcategory::insert($blogCat);
+
+        //? Insertion to BlogTag table
+        foreach ($tags as $t) {
+            array_push($blogTag, [
+                'tag_id' => $t,
+                'blog_id' => $blog->id
+            ]);
+        }
+        Blogtag::insert($blogTag);
+
+
+
+        return 'done';
     }
 }

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Middleware\AdminCheck;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,6 +39,11 @@ Route::prefix('app')->middleware(['admincheck'])->group(function() {
     Route::post('edit_role', 'AdminController@editRole');
     Route::post('delete_role', 'AdminController@deleteRole');
     Route::post('assign_roles', 'AdminController@assignRole');
+
+
+    //? BLOG
+    Route::post('create_blog', 'AdminController@createBlog');
+
 });
 
 Route::post('createBlog', 'AdminController@uploadEditorImage');
@@ -47,9 +51,7 @@ Route::post('createBlog', 'AdminController@uploadEditorImage');
 Route::get('slug', 'AdminController@slug');
 
 
-//BLog
 
-Route::post('create_blog', 'AdminController@createBlog');
 
 
 Route::get('/logout', 'AdminController@logout');
