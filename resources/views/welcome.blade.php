@@ -22,6 +22,7 @@
        <div id="app">
             @if (Auth::check())
                 <mainapp :user="{{ Auth::user() }}" :permissions="{{ Auth::user()->role->permission }}"></mainapp>
+                {{-- <mainapp :user="{{ Auth::user() }}></mainapp> --}}
             @else
                 <mainapp :user="false"></mainapp>
             @endif

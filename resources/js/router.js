@@ -19,6 +19,8 @@ import role from './admin/pages/role'
 import assignRole from './admin/pages/assignRole'
 import createBlog from './admin/pages/createBlog'
 import blogs from './admin/pages/blogs'
+import editblog from './admin/pages/editblog'
+import notfound from './admin/pages/notfound'
 
 const routes = [
     //project routes
@@ -41,6 +43,11 @@ const routes = [
         path: '/createBlog',
         component: createBlog,
         name: 'createBlog'
+    },
+    {
+        path: '/editblog/:id',
+        component: editblog,
+        name: 'editblog'
     },
     {
         path: '/blogs',
@@ -70,7 +77,13 @@ const routes = [
         path: '/assignRole',
         component: assignRole,
         name: 'assignRole'
-    }
+    },
+    {
+        path: '*',
+        component: notfound,
+        name: 'notfound'
+
+    },
 ] 
 
 export default new Router({

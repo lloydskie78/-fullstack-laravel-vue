@@ -18,34 +18,37 @@ class AdminController extends Controller
 {
 
     public function index(Request $request)
-    {   //? check first if user is admin or not and if the path is login
+    {
+        // first check if you are loggedin and admin user ...
+        //return Auth::check();
+
         if (!Auth::check() && $request->path() != 'login') {
             return redirect('/login');
         }
 
         if (!Auth::check() && $request->path() == 'login') {
+
             return view('welcome');
         }
-
+        // you are already logged in... so check for if you are an admin user..
         $user = Auth::user();
         if ($user->userType == 'User') {
             return redirect('/login');
         }
-
         if ($request->path() == 'login') {
             return redirect('/');
         }
 
         return $this->checkForPermission($user, $request);
-        return view('notfound');
-        return view('welcome');
     }
 
     public function checkForPermission($user, $request)
     {
         $permission = json_decode($user->role->permission);
         $hasPermission = false;
-        if (!$permission) return view('welcome');
+        if (!$permission) {
+            return view('welcome');
+        }
 
         foreach ($permission as $p) {
             if ($p->name == $request->path()) {
@@ -54,8 +57,11 @@ class AdminController extends Controller
                 }
             }
         }
+        if ($hasPermission) {
+            return view('welcome');
+        }
 
-        if ($hasPermission) return view('welcome');
+        return view('welcome');
         return view('notfound');
     }
 
@@ -329,9 +335,19 @@ class AdminController extends Controller
 
     public function createBlog(Request $request)
     {
+        //? REQUEST VALIDATION
+        $this->validate($request, [
+            'title' => 'required',
+            'post' => 'required',
+            'post_excerpt' => 'required',
+            'metaDescription' => 'required',
+            'jsonData' => 'required',
+            'category_id' => 'required',
+            'tag_id' => 'required',
+        ]);
+
         $categories = $request->category_id;
         $tags = $request->tag_id;
-
         $blogCategories = [];
         $blogTag = [];
 
@@ -340,7 +356,6 @@ class AdminController extends Controller
         //! CATCHING THE DATABASE ERROR AND DOING A ROLLBACK SO IT WOULDN'T INSERT
 
         DB::beginTransaction();
-
         try {
             $blog =  Blog::create([
                 'title' => $request->title,
@@ -369,7 +384,6 @@ class AdminController extends Controller
                 ]);
             }
             Blogtag::insert($blogTag);
-
             DB::commit();
             return 'done';
         } catch (\Throwable $th) {
@@ -380,13 +394,68 @@ class AdminController extends Controller
         }
     }
 
+    public function updateBlog(Request $request, $id)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'post' => 'required',
+            'post_excerpt' => 'required',
+            'metaDescription' => 'required',
+            'jsonData' => 'required',
+            'category_id' => 'required',
+            'tag_id' => 'required',
+        ]);
+
+        $categories = $request->category_id;
+        $tags = $request->tag_id;
+        $blogCategories = [];
+        $blogTags = [];
+
+        DB::beginTransaction();
+        try {
+            $blog = Blog::where('id', $id)->update([
+                'title' => $request->title,
+                'slug' => $request->title,
+                'post' => $request->post,
+                'post_excerpt' => $request->post_excerpt,
+                'user_id' => Auth::user()->id,
+                'metaDescription' => $request->metaDescription,
+                'jsonData' => $request->jsonData,
+            ]);
+
+
+            // insert blog categories
+            foreach ($categories as $c) {
+                array_push($blogCategories, ['category_id' => $c, 'blog_id' => $id]);
+            }
+            // delete all previous categories
+            Blogcategory::where('blog_id', $id)->delete();
+            Blogcategory::insert($blogCategories);
+            // insert blog tags
+            foreach ($tags as $t) {
+                array_push($blogTags, ['tag_id' => $t, 'blog_id' => $id]);
+            }
+            Blogtag::where('blog_id', $id)->delete();
+            Blogtag::insert($blogTags);
+            DB::commit();
+            return 'done';
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return 'not done';
+        }
+    }
+
     public function blogdata()
     {
-        return Blog::with(['tag', 'cat'])->get();
+        return Blog::with(['tag', 'cat'])->orderBy('id', 'desc')->get();
     }
 
     public function deleteBlog(Request $request)
     {
         return Blog::where('id', $request->id)->delete();
+    }
+    public function singleBlogItem($id)
+    {
+        return Blog::with(['tag', 'cat'])->where('id', $id)->first();
     }
 }
