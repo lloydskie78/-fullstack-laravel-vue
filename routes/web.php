@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::prefix('app')->middleware(['admincheck'])->group(function() {
+Route::prefix('app')->middleware(['admincheck'])->group(function () {
     Route::post('/create_tag', 'AdminController@addTag');
     Route::get('/get_tags', 'AdminController@getTag');
     Route::post('/edit_tag', 'AdminController@editTag');
@@ -44,20 +44,18 @@ Route::prefix('app')->middleware(['admincheck'])->group(function() {
     //? BLOG
     Route::post('create_blog', 'AdminController@createBlog');
     Route::get('blogsdata', 'AdminController@blogdata'); //? Getting the blogs data
-    Route::post('delete_blog', 'AdminController@deleteBlog'); //? Getting the blogs data
+    Route::post('delete_blog', 'AdminController@deleteBlog'); //? For deleting the blogs data
+    Route::get('blog_single/{id}', 'AdminController@singleBlogItem'); //? For showing the single blog data
+    Route::post('update_blog/{id}', 'AdminController@updateBlog'); //? For editing the blogs data
 
 });
 
 Route::post('createBlog', 'AdminController@uploadEditorImage');
-
 Route::get('slug', 'AdminController@slug');
-
 Route::get('blogdata', 'AdminController@blogdata');
 
 
 
 Route::get('/logout', 'AdminController@logout');
 Route::get('/', 'AdminController@index');
-Route::any('{slug}', 'AdminController@index');
-
-
+Route::any('{slug}', 'AdminController@index')->where('slug', '([A-z\d-\/_.]+)?');

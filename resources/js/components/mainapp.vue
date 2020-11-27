@@ -21,7 +21,7 @@
                         <li v-for="(menuItem, i) in permissions" 
                         :key="i" v-if="permissions.length && menuItem.read">
 
-                            <router-link :to="menuItem.name">
+                            <router-link :to="'/'+menuItem.name">
                                 {{ menuItem.resourceName }}
                             </router-link>
                         </li>
