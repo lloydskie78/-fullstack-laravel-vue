@@ -199,6 +199,7 @@ export default {
       this.callApi("get", "/app/get_category"),
       this.callApi("get", "/app/get_tags"),
     ]);
+
     if (blog.status == 200) {
       if (!blog.data) return this.$router.push("/notfound");
 

@@ -438,10 +438,10 @@ class AdminController extends Controller
             Blogtag::where('blog_id', $id)->delete();
             Blogtag::insert($blogTags);
             DB::commit();
-            return 'done';
+            return 'update done';
         } catch (\Throwable $th) {
             DB::rollBack();
-            return 'not done';
+            return 'update not done';
         }
     }
 
