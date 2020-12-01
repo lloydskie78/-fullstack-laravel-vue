@@ -64,6 +64,13 @@
             </table>
           </div>
         </div>
+        <Page
+          :total="pageInfo.total"
+          :current="pageInfo.current_page"
+          :page-size="parseInt(pageInfo.per_page)"
+          @on-change="getBlogData"
+          v-if="pageInfo"
+        />
 
         <deleteModal></deleteModal>
       </div>
@@ -72,7 +79,6 @@
 </template>
 
 <script>
-
 import deleteModal from "../components/deleteModal.vue";
 import { mapGetters } from "vuex";
 
@@ -87,6 +93,8 @@ export default {
       deleteItem: {},
       delIndex: -1,
       blogs: [],
+      total: 1,
+      pageInfo: null,
     };
   },
   methods: {
@@ -107,14 +115,21 @@ export default {
       // this.delIndex = i
       // this.showDeleteModal = true
     },
+    async getBlogData(page = 1) {
+      const res = await this.callApi(
+        "get",
+        `app/blogsdata?page=${page}&total=${this.total}`
+      );
+      if (res.status === 200) {
+        this.blogs = res.data.data;
+        this.pageInfo = res.data;
+      } else {
+        this.swr();
+      }
+    },
   },
   async created() {
-    const res = await this.callApi("get", "app/blogsdata");
-    if (res.status === 200) {
-      this.blogs = res.data;
-    } else {
-      this.swr();
-    }
+    this.getBlogData();
   },
   components: {
     deleteModal,
