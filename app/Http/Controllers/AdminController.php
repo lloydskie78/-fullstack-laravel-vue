@@ -389,7 +389,7 @@ class AdminController extends Controller
         } catch (\Throwable $th) {
             DB::rollback();
             return response()->json([
-                'msg' => 'Something went wrong!',
+                'msg' => $th,
             ], 400);
         }
     }
@@ -445,9 +445,9 @@ class AdminController extends Controller
         }
     }
 
-    public function blogdata()
+    public function blogdata(Request $request)
     {
-        return Blog::with(['tag', 'cat'])->orderBy('id', 'desc')->get();
+        return Blog::with(['tag', 'cat'])->orderBy('id')->paginate($request->total);
     }
 
     public function deleteBlog(Request $request)
